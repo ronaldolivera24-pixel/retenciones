@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campaña Retenciones — Wiki Operativa</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --surface2: #f0ede8;
+  --border: #e2ddd8;
+  --accent: #1a472a;
+  --accent2: #2d6a4f;
+  --accent-light: #e8f5e9;
+  --text: #1a1a18;
+  --muted: #7a776e;
+  --warn: #c45c00;
+  --warn-bg: #fff4ec;
+  --danger: #c0392b;
+  --tag-blue: #1a3a5c;
+  --tag-blue-bg: #e8f0fa;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.13);
+  --radius: 12px;
+  --edit-color: #7c3aed;
+  --edit-bg: #f5f0ff;
+  --edit-border: #c4b5fd;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--accent);
+  display: flex; align-items: center; gap: 0;
+  height: 52px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+}
+
+.topbar-brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 24px;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  height: 100%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.topbar-brand:hover { background: rgba(255,255,255,0.07); }
+.topbar-brand-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #52b788;
+  box-shadow: 0 0 8px #52b788;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+.topbar-brand-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* breadcrumb */
+.breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 20px;
+  flex: 1;
+  overflow: hidden;
+}
+.bc-item {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+.bc-item:hover { color: rgba(255,255,255,0.9); }
+.bc-item.active { color: #fff; font-weight: 600; }
+.bc-sep { color: rgba(255,255,255,0.25); font-size: 11px; }
+
+/* topbar right */
+.topbar-right {
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px;
+}
+
+.btn-edit-toggle {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Instrument Sans', sans-serif;
+}
+.btn-edit-toggle:hover { background: rgba(255,255,255,0.18); }
+.btn-edit-toggle.active {
+  background: var(--edit-color);
+  border-color: var(--edit-color);
+}
+
+.clock {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255,255,255,0.12);
+  min-width: 72px;
+  text-align: right;
+}
+
+/* ── LAYOUT ── */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 52px);
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+}
+
+.sidebar-section {
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-section-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+.sidebar-section-header:hover { background: var(--surface2); }
+
+.sidebar-section-icon { font-size: 16px; }
+.sidebar-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text);
+  flex: 1;
+}
+.sidebar-section-chevron {
+  font-size: 10px;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+.sidebar-section.open .sidebar-section-chevron { transform: rotate(90deg); }
+
+.sidebar-items {
+  display: none;
+  flex-direction: column;
+}
+.sidebar-section.open .sidebar-items { display: flex; }
+
+.sidebar-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 18px 9px 32px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+  position: relative;
+}
+.sidebar-item:hover { background: var(--surface2); color: var(--text); }
+.sidebar-item.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+  border-left-color: var(--accent);
+}
+
+.sidebar-subitem {
+  padding: 7px 18px 7px 44px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-subitem:hover { background: var(--surface2); color: var(--text); }
+.sidebar-subitem.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+  border-left-color: var(--accent);
+}
+
+.sidebar-del-btn {
+  opacity: 0;
+  color: var(--danger);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  background: #fff1f2;
+  line-height: 1;
+}
+.sidebar-subitem:hover .sidebar-del-btn { opacity: 1; }
+.sidebar-del-btn:hover { background: #fecaca; }
+
+/* add btn in sidebar */
+.sidebar-add-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 18px 8px 32px;
+  font-size: 12px;
+  color: var(--edit-color);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.edit-mode .sidebar-add-btn { opacity: 1; pointer-events: all; }
+.sidebar-add-btn:hover { background: var(--edit-bg); }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  padding: 40px 48px;
+  max-width: 900px;
+}
+
+/* ── HOME PAGE ── */
+.home-hero {
+  margin-bottom: 48px;
+}
+.home-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 12px;
+}
+.home-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.home-title span { color: var(--accent); }
+.home-desc {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.7;
+}
+
+.home-stats {
+  display: flex; gap: 24px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+.stat-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 8px 18px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.stat-pill-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* section label */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* category cards */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+.cat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.cat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--card-accent, var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+.cat-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: #ccc; }
+.cat-card:hover::before { transform: scaleX(1); }
+
+.cat-card-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+.cat-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.cat-card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.cat-card-meta {
+  margin-top: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.cat-card-count {
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--surface2);
+  border-radius: 100px;
+  padding: 3px 10px;
+}
+.cat-card-arrow {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 16px;
+  transition: all 0.2s;
+}
+.cat-card:hover .cat-card-arrow { color: var(--accent); transform: translateX(3px); }
+
+/* ── CONTENT PAGE ── */
+.page-header {
+  display: flex; align-items: flex-start; gap: 20px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.page-header-icon {
+  font-size: 40px;
+  width: 64px; height: 64px;
+  background: var(--accent-light);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.page-header-text { flex: 1; }
+.page-header-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin-bottom: 6px;
+}
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.page-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 580px;
+}
+
+/* ── CONTENT BLOCKS ── */
+.content-area { display: flex; flex-direction: column; gap: 20px; }
+
+.block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+/* edit mode highlight */
+.edit-mode .block:hover {
+  border-color: var(--edit-border);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.08);
+}
+
+.block-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 20px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+}
+.block-header-icon { font-size: 16px; }
+.block-header-title {
+  font-size: 14px;
+  font-weight: 600;
+  flex: 1;
+}
+.block-toggle {
+  font-size: 11px;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+.block.open .block-toggle { transform: rotate(180deg); }
+
+.block-body {
+  padding: 20px;
+  display: none;
+}
+.block.open .block-body { display: block; }
+.block.always-open .block-body { display: block; }
+
+/* ── TEXT BLOCK ── */
+.text-content {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text);
+  outline: none;
+}
+.edit-mode .text-content[contenteditable]:focus {
+  background: var(--edit-bg);
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin: -4px -8px;
+}
+
+/* ── LINK BLOCK ── */
+.link-list { display: flex; flex-direction: column; gap: 8px; }
+.link-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.18s;
+  cursor: pointer;
+}
+.link-item:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+  transform: translateX(3px);
+  box-shadow: var(--shadow);
+}
+.link-item-icon {
+  width: 34px; height: 34px;
+  background: var(--accent-light);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.link-item-body { flex: 1; min-width: 0; }
+.link-item-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.link-item-url {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.link-item-arrow { color: var(--muted); font-size: 16px; transition: all 0.18s; }
+.link-item:hover .link-item-arrow { color: var(--accent); }
+
+/* ── IMAGE BLOCK ── */
+.img-block {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+}
+.img-placeholder {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none;
+}
+.edit-mode .img-placeholder { display: block; }
+.img-placeholder:hover { border-color: var(--edit-color); background: var(--edit-bg); color: var(--edit-color); }
+
+/* ── TABLE BLOCK ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.data-table th {
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.data-table th:first-child { border-radius: 8px 0 0 0; }
+.data-table th:last-child  { border-radius: 0 8px 0 0; }
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: var(--surface2); }
+.data-table .price {
+  font-weight: 700;
+  color: var(--accent);
+  font-family: 'Syne', sans-serif;
+}
+.data-table .badge-cell {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 100px;
+  letter-spacing: 0.5px;
+}
+.badge-green  { background: #d1fae5; color: #065f46; }
+.badge-blue   { background: #dbeafe; color: #1e40af; }
+.badge-orange { background: #ffedd5; color: #9a3412; }
+.badge-gray   { background: #f3f4f6; color: #374151; }
+
+/* ── SUBCATEGORY LIST (inside a page) ── */
+.subcat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.subcat-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.subcat-card:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+.subcat-icon { font-size: 20px; }
+.subcat-title { font-size: 13px; font-weight: 600; }
+.subcat-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ── ALERT BOXES ── */
+.alert {
+  display: flex; gap: 12px;
+  padding: 14px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.alert.warn  { background: var(--warn-bg);   border-left: 3px solid var(--warn);   color: #7c3d12; }
+.alert.info  { background: var(--tag-blue-bg); border-left: 3px solid var(--tag-blue); color: #1a3a5c; }
+.alert.ok    { background: var(--accent-light); border-left: 3px solid var(--accent); color: #1a472a; }
+
+/* ── EDIT MODE TOOLBAR ── */
+.edit-toolbar {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a18;
+  border-radius: 100px;
+  padding: 10px 20px;
+  gap: 6px;
+  align-items: center;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+  z-index: 300;
+  flex-wrap: nowrap;
+}
+.edit-mode .edit-toolbar { display: flex; }
+
+.etb-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding-right: 10px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  margin-right: 4px;
+  white-space: nowrap;
+}
+.etb-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  font-family: 'Instrument Sans', sans-serif;
+}
+.etb-btn:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.2); }
+.etb-btn.primary { background: var(--edit-color); border-color: var(--edit-color); }
+.etb-btn.primary:hover { background: #6d28d9; }
+.etb-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.1); margin: 0 4px; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 400;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn 0.2s ease;
+}
+@keyframes modalIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+.modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+.modal-field { margin-bottom: 16px; }
+.modal-field label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+.modal-field input, .modal-field textarea, .modal-field select {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: 'Instrument Sans', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-field input:focus, .modal-field textarea:focus, .modal-field select:focus { border-color: var(--edit-color); }
+.modal-field textarea { resize: vertical; min-height: 80px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+.btn-cancel {
+  padding: 9px 20px; border-radius: 8px; border: 1px solid var(--border);
+  background: none; cursor: pointer; font-size: 13px; font-weight: 600;
+  font-family: 'Instrument Sans', sans-serif; color: var(--muted); transition: all 0.2s;
+}
+.btn-cancel:hover { background: var(--surface2); }
+.btn-confirm {
+  padding: 9px 20px; border-radius: 8px; border: none;
+  background: var(--edit-color); color: #fff; cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  font-family: 'Instrument Sans', sans-serif; transition: all 0.2s;
+}
+.btn-confirm:hover { background: #6d28d9; }
+.btn-danger-sm {
+  padding: 9px 20px; border-radius: 8px; border: 1px solid #fecaca;
+  background: #fff1f2; color: var(--danger); cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  font-family: 'Instrument Sans', sans-serif; transition: all 0.2s;
+  margin-right: auto;
+}
+.btn-danger-sm:hover { background: #ffe4e6; }
+
+/* ── EDIT OVERLAY ON BLOCK ── */
+.block-edit-overlay {
+  display: none;
+  position: absolute;
+  top: 8px; right: 8px;
+  gap: 4px;
+  z-index: 10;
+}
+.edit-mode .block:hover .block-edit-overlay { display: flex; }
+.block-edit-btn {
+  background: var(--edit-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Instrument Sans', sans-serif;
+}
+.block-edit-btn.del { background: var(--danger); }
+.block { position: relative; }
+
+/* ── ADD BLOCK ZONE ── */
+.add-block-zone {
+  display: none;
+  border: 2px dashed var(--edit-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--edit-color);
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--edit-bg);
+  font-weight: 500;
+}
+.edit-mode .add-block-zone { display: block; }
+.add-block-zone:hover { border-color: var(--edit-color); background: #ede9ff; }
+
+/* ── QUICK UPDATE ── */
+.block-updated {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+}
+
+.block-quick-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Instrument Sans', sans-serif;
+  transition: all 0.15s;
+}
+.block-quick-btn:hover {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(245,158,11,0.2);
+}
+
+/* ── AVISO ENTORNO LOCAL ── */
+.env-warning {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.env-warning-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.env-warning-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: #1a1a18;
+}
+.env-warning-desc {
+  font-size: 13px;
+  color: #71717a;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.env-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: #f7f6f2;
+  border-radius: 8px;
+}
+.env-step-num {
+  background: #1a472a;
+  color: #fff;
+  border-radius: 50%;
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800;
+  flex-shrink: 0;
+}
+.env-btn-row {
+  display: flex; gap: 10px; margin-top: 20px;
+}
+.env-btn-ok {
+  flex: 1;
+  padding: 10px;
+  background: #1a472a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Instrument Sans', sans-serif;
+}
+.env-btn-skip {
+  padding: 10px 16px;
+  background: none;
+  border: 1px solid #e5e2db;
+  color: #71717a;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Instrument Sans', sans-serif;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--surface2); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+.fadein { animation: fadeUp 0.35s ease both; }
+
+/* ── NO PAGE ── */
+.empty-state {
+  text-align: center;
+  padding: 80px 40px;
+  color: var(--muted);
+}
+.empty-state-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+.empty-state-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.empty-state-desc { font-size: 14px; line-height: 1.6; }
+
+/* responsive */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ TOPBAR ══════════════════ -->
+<div class="topbar">
+  <div class="topbar-brand" onclick="navigate('home')">
+    <div class="topbar-brand-dot"></div>
+    <div class="topbar-brand-text">Retenciones</div>
+  </div>
+  <div class="breadcrumb" id="breadcrumb">
+    <span class="bc-item active">Inicio</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn-edit-toggle" id="editToggle" onclick="requestEditAccess()">
+      ✏️ Editar
+    </button>
+    <button class="btn-edit-toggle" id="exportBtn" onclick="exportFile()" style="background:rgba(255,255,255,0.08);display:none">
+      📤 Exportar
+    </button>
+    <div class="clock" id="clock">00:00</div>
+  </div>
+</div>
+
+<!-- ══════════════════ LAYOUT ══════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main" id="mainContent"></div>
+
+</div>
+
+<!-- ══════════════════ EDIT TOOLBAR ══════════════════ -->
+<div class="edit-toolbar">
+  <span class="etb-label">✏️ Modo Edición</span>
+  <button class="etb-btn" onclick="addBlockModal('text')">📝 Texto</button>
+  <button class="etb-btn" onclick="addBlockModal('links')">🔗 Links</button>
+  <button class="etb-btn" onclick="addBlockModal('table')">📊 Tabla</button>
+  <button class="etb-btn" onclick="addBlockModal('image')">🖼️ Imagen</button>
+  <button class="etb-btn" onclick="addBlockModal('alert')">⚠️ Aviso</button>
+  <div class="etb-sep"></div>
+  <button class="etb-btn" onclick="addSubcatModal()">📁 Subcategoría</button>
+  <button class="etb-btn primary" onclick="saveToStorage()">💾 Guardar</button>
+</div>
+
+<!-- ══════════════════ MODAL ══════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<!-- ══════════════════ SCRIPTS ══════════════════ -->
+<script>
+/* ══════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════ */
+let editMode = false;
+let currentPath = ['home']; // e.g. ['planes','vigentes']
+
+/* ══════════════════════════════════════════════════════
+   DEFAULT DATA STRUCTURE
+   Estructura: categorias[] → subcategorias[] → bloques[]
+══════════════════════════════════════════════════════ */
+const DEFAULT_DATA = {
+  title: 'CAMPAÑA RETENCIONES',
+  subtitle: 'Guía operativa para ejecutivos del servicio',
+  categories: [
+    {
+      id: 'planes',
+      icon: '📋',
+      title: 'Planes Vigentes',
+      desc: 'Tarifas, velocidades y condiciones de los planes activos.',
+      color: '#1a472a',
+      subcats: [
+        {
+          id: 'planes-hogar',
+          icon: '🏠',
+          title: 'Planes Hogar',
+          desc: 'Internet y TV para residentes',
+          blocks: [
+            {
+              type: 'alert',
+              subtype: 'info',
+              title: 'Información',
+              content: 'Esta sección contiene los planes vigentes para clientes de hogar. Actualizar mensualmente según instrucciones del área comercial.'
+            },
+            {
+              type: 'table',
+              title: '📊 Tabla de Planes Hogar',
+              headers: ['Plan', 'Velocidad', 'Precio Mensual', 'Beneficios', 'Estado'],
+              rows: [
+                ['Básico 100', '100 Mbps', '$19.990', 'Sin costo instalación', 'VIGENTE'],
+                ['Estándar 300', '300 Mbps', '$24.990', 'Router incluido', 'VIGENTE'],
+                ['Premium 600', '600 Mbps', '$32.990', 'Router + decodificador HD', 'VIGENTE'],
+                ['Ultra 1Gb', '1000 Mbps', '$44.990', 'Pack completo + soporte premium', 'NUEVO'],
+              ],
+              badges: { 'VIGENTE': 'green', 'NUEVO': 'blue', 'DESCONTINUADO': 'gray' }
+            },
+            {
+              type: 'links',
+              title: '🔗 Links relacionados',
+              items: [
+                { icon: '📄', title: 'Ficha técnica planes hogar', url: 'https://somosclave.cl/planes-hogar' },
+                { icon: '📜', title: 'Condiciones y contratos', url: 'https://somosclave.cl/contratos-hogar' },
+              ]
+            }
+          ]
+        },
+        {
+          id: 'planes-movil',
+          icon: '📱',
+          title: 'Planes Móvil',
+          desc: 'Planes de datos y minutos móviles',
+          blocks: [
+            {
+              type: 'table',
+              title: '📊 Planes Móviles Vigentes',
+              headers: ['Plan', 'GB Datos', 'Minutos', 'Precio', 'Estado'],
+              rows: [
+                ['S 8GB',  '8 GB',  'Ilimitados', '$9.990',  'VIGENTE'],
+                ['M 20GB', '20 GB', 'Ilimitados', '$14.990', 'VIGENTE'],
+                ['L 50GB', '50 GB', 'Ilimitados', '$19.990', 'VIGENTE'],
+                ['XL ∞',   'Ilimitados', 'Ilimitados', '$29.990', 'NUEVO'],
+              ],
+              badges: { 'VIGENTE': 'green', 'NUEVO': 'blue' }
+            },
+            {
+              type: 'links',
+              title: '🔗 Links relacionados',
+              items: [
+                { icon: '📡', title: 'Cobertura móvil por zona', url: 'https://somosclave.cl/cobertura-movil' },
+                { icon: '📑', title: 'Portabilidad numérica – guía', url: 'https://somosclave.cl/portabilidad' },
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'oferta',
+      icon: '🎯',
+      title: 'Oferta Comercial Vigente',
+      desc: 'Promociones y descuentos autorizados para retener clientes.',
+      color: '#1e40af',
+      subcats: [
+        {
+          id: 'oferta-retenciones',
+          icon: '💎',
+          title: 'Oferta de Retenciones',
+          desc: 'Descuentos y beneficios exclusivos para retener',
+          blocks: [
+            {
+              type: 'alert',
+              subtype: 'warn',
+              title: 'Atención',
+              content: 'Las ofertas de retención solo pueden ofrecerse a clientes con intención de baja confirmada. Registrar siempre en el CRM.'
+            },
+            {
+              type: 'table',
+              title: '💰 Oferta Mes Actual',
+              headers: ['Oferta', 'Beneficio', 'Duración', 'Requisito'],
+              rows: [
+                ['Descuento 20%', '20% dto. en plan actual', '3 meses', 'Permanencia 6m'],
+                ['Upgrade gratis', 'Subida de plan sin costo', '1er mes gratis', 'Permanencia 12m'],
+                ['Pack retención', 'Descuento + router nuevo', '6 meses', 'Permanencia 18m'],
+              ],
+              badges: {}
+            },
+            {
+              type: 'links',
+              title: '🔗 Recursos comerciales',
+              items: [
+                { icon: '🎁', title: 'Portal de ofertas vigentes (somosclave)', url: 'https://somosclave.cl/oferta-retencion' },
+                { icon: '📋', title: 'Formulario de oferta especial', url: 'https://somosclave.cl/formulario-oferta' },
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'tecnicos',
+      icon: '🔧',
+      title: 'Inconvenientes Técnicos',
+      desc: 'Protocolos para gestionar fallas y escalaciones técnicas.',
+      color: '#c45c00',
+      subcats: [
+        {
+          id: 'tec-diagnostico',
+          icon: '🔍',
+          title: 'Diagnóstico Básico',
+          desc: 'Pasos de diagnóstico con el cliente en línea',
+          blocks: [
+            {
+              type: 'text',
+              title: '📋 Protocolo de Diagnóstico',
+              content: `Cuando el cliente reporta un problema técnico, seguir estos pasos en orden:\n\n1. Verificar si existe una avería masiva en la zona (consultar Estado de Red).\n2. Si no hay avería masiva, iniciar diagnóstico básico con el cliente.\n3. Solicitar al cliente reiniciar el router (apagar 30 segundos y encender).\n4. Verificar si las luces del router están en estado normal.\n5. Si el problema persiste, escalar a soporte técnico nivel 2.`
+            },
+            {
+              type: 'links',
+              title: '🔗 Herramientas técnicas',
+              items: [
+                { icon: '🌐', title: 'Estado de red en tiempo real', url: 'https://somosclave.cl/estado-red' },
+                { icon: '📟', title: 'Guía luces del router por modelo', url: 'https://somosclave.cl/guia-router' },
+                { icon: '🎫', title: 'Crear ticket técnico', url: 'https://somosclave.cl/nuevo-ticket' },
+              ]
+            }
+          ]
+        },
+        {
+          id: 'tec-escalacion',
+          icon: '📡',
+          title: 'Escalación Técnica',
+          desc: 'Cuándo y cómo escalar a soporte nivel 2',
+          blocks: [
+            {
+              type: 'alert',
+              subtype: 'warn',
+              title: 'Importante',
+              content: 'Escalar solo después de completar el diagnóstico básico. Documentar todos los pasos realizados antes de escalar.'
+            },
+            {
+              type: 'table',
+              title: '📊 Criterios de Escalación',
+              headers: ['Situación', 'Acción', 'SLA'],
+              rows: [
+                ['Avería masiva confirmada', 'Informar al cliente, no crear ticket', '—'],
+                ['Falla sin avería masiva', 'Crear ticket N2 – reparación domiciliaria', '48 hrs'],
+                ['Sin servicio +24 hrs', 'Escalación urgente + compensación', '24 hrs'],
+                ['Reclamo reiterado', 'Derivar a supervisor técnico', '2 hrs'],
+              ],
+              badges: {}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'herramientas',
+      icon: '🛠️',
+      title: 'Herramientas de Retenciones',
+      desc: 'Sistemas y plataformas para la gestión del ejecutivo.',
+      color: '#6d28d9',
+      subcats: [
+        {
+          id: 'herr-sistemas',
+          icon: '💻',
+          title: 'Acceso a Sistemas',
+          desc: 'Links directos a plataformas de trabajo',
+          blocks: [
+            {
+              type: 'links',
+              title: '🔗 Sistemas principales',
+              items: [
+                { icon: '👤', title: 'CRM – Gestión de clientes', url: 'https://somosclave.cl/crm' },
+                { icon: '📋', title: 'Sistema de órdenes de servicio', url: 'https://somosclave.cl/ordenes' },
+                { icon: '📊', title: 'Dashboard métricas ejecutivo', url: 'https://somosclave.cl/metricas' },
+                { icon: '📢', title: 'Portal de novedades y comunicados', url: 'https://somosclave.cl/novedades' },
+                { icon: '🎓', title: 'E-learning y capacitaciones', url: 'https://somosclave.cl/capacitacion' },
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'solicitudes',
+      icon: '📝',
+      title: 'Solicitudes Comerciales',
+      desc: 'Flujos para cambios de plan, portabilidad y bajas.',
+      color: '#0891b2',
+      subcats: [
+        {
+          id: 'sol-cambioplan',
+          icon: '🔄',
+          title: 'Cambio de Plan',
+          desc: 'Proceso de upgrade o downgrade de plan',
+          blocks: [
+            {
+              type: 'text',
+              title: '📋 Proceso Cambio de Plan',
+              content: `El cambio de plan se puede solicitar en cualquier momento del ciclo de facturación. El cambio se aplica al inicio del próximo ciclo.\n\nPasos:\n1. Verificar elegibilidad del cliente (sin deuda pendiente)\n2. Consultar stock del plan destino\n3. Registrar solicitud en CRM con motivo\n4. Confirmar con el cliente fecha efectiva del cambio\n5. Enviar confirmación por correo electrónico`
+            },
+            {
+              type: 'links',
+              title: '🔗 Formularios',
+              items: [
+                { icon: '📋', title: 'Formulario cambio de plan', url: 'https://somosclave.cl/cambio-plan' },
+                { icon: '📬', title: 'Confirmación por email (plantilla)', url: 'https://somosclave.cl/plantilla-email' },
+              ]
+            }
+          ]
+        },
+        {
+          id: 'sol-baja',
+          icon: '⚠️',
+          title: 'Proceso de Baja',
+          desc: 'Protocolo ante solicitud de término de contrato',
+          blocks: [
+            {
+              type: 'alert',
+              subtype: 'warn',
+              title: 'Protocolo de Baja',
+              content: 'Antes de procesar una baja, es obligatorio ofrecer al menos una oferta de retención. Registrar el rechazo del cliente en el CRM.'
+            },
+            {
+              type: 'text',
+              title: '📋 Pasos del Proceso de Baja',
+              content: `1. Escuchar motivo de baja activamente\n2. Aplicar argumentario según motivo (precio, servicio, mudanza, etc.)\n3. Ofrecer oferta de retención correspondiente\n4. Si el cliente rechaza: registrar en CRM y proceder con baja\n5. Informar plazos: la baja se aplica al fin del ciclo vigente\n6. Coordinar retiro de equipos si corresponde`
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'argumentario',
+      icon: '🎤',
+      title: 'Argumentario',
+      desc: 'Scripts, manejo de objeciones y speech de retención.',
+      color: '#be185d',
+      subcats: [
+        {
+          id: 'arg-apertura',
+          icon: '📞',
+          title: 'Apertura de Llamada',
+          desc: 'Script de bienvenida y detección de necesidad',
+          blocks: [
+            {
+              type: 'text',
+              title: '🎤 Script de Apertura',
+              content: `"Buenos días/tardes, le saluda [NOMBRE] del equipo de Atenciones de [EMPRESA]. ¿Con quién tengo el gusto de hablar?\n\n[Esperar respuesta]\n\nGracias [NOMBRE DEL CLIENTE], lo contactamos porque hemos visto su solicitud de [motivo] y queremos asegurarnos de darle la mejor solución posible. ¿Tiene un par de minutos para que lo pueda ayudar?"`
+            },
+            {
+              type: 'alert',
+              subtype: 'ok',
+              title: 'Consejo',
+              content: 'Siempre usar el nombre del cliente al menos 3 veces durante la llamada. Generar confianza antes de hacer cualquier oferta.'
+            }
+          ]
+        },
+        {
+          id: 'arg-objeciones',
+          icon: '💬',
+          title: 'Manejo de Objeciones',
+          desc: 'Respuestas preparadas para las objeciones más comunes',
+          blocks: [
+            {
+              type: 'table',
+              title: '💬 Objeciones y Respuestas',
+              headers: ['Objeción del cliente', 'Respuesta sugerida'],
+              rows: [
+                ['"Es muy caro"', '"Entiendo, por eso quiero mostrarte una oferta especial que tenemos para ti..."'],
+                ['"El servicio es malo"', '"Lamento escuchar eso. Revisemos juntos qué está pasando para resolverlo de inmediato..."'],
+                ['"Me voy a otra empresa"', '"Te entiendo. ¿Me podrías contar qué te ofrecen? Quiero ver si podemos igualarlo o mejorarlo..."'],
+                ['"No me interesa ninguna oferta"', '"¿Puedo preguntarte qué necesitaría para que valga la pena quedarse?"'],
+              ],
+              badges: {}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'procedimientos',
+      icon: '📌',
+      title: 'Procedimientos',
+      desc: 'Protocolos internos, tipificación y normativas.',
+      color: '#374151',
+      subcats: [
+        {
+          id: 'proc-tipificacion',
+          icon: '🏷️',
+          title: 'Tipificación de Llamadas',
+          desc: 'Cómo registrar correctamente cada gestión',
+          blocks: [
+            {
+              type: 'table',
+              title: '🏷️ Códigos de Tipificación',
+              headers: ['Código', 'Descripción', 'Cuándo usar'],
+              rows: [
+                ['RET-OK', 'Retención exitosa', 'Cliente acepta oferta y permanece'],
+                ['RET-FALL', 'Retención fallida', 'Cliente rechaza oferta y solicita baja'],
+                ['RET-PEND', 'Retención pendiente', 'Cliente pide tiempo para decidir'],
+                ['TEC-ESCAL', 'Escalación técnica', 'Derivación a soporte técnico'],
+                ['SOL-CAMP', 'Cambio de plan', 'Solicitud procesada de cambio'],
+              ],
+              badges: {}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'faq',
+      icon: '💬',
+      title: 'Preguntas Frecuentes',
+      desc: 'Respuestas listas para las consultas más comunes.',
+      color: '#0f766e',
+      subcats: [
+        {
+          id: 'faq-general',
+          icon: '❓',
+          title: 'FAQ General',
+          desc: 'Las preguntas más frecuentes de clientes',
+          blocks: [
+            {
+              type: 'table',
+              title: '❓ Preguntas Frecuentes',
+              headers: ['Pregunta', 'Respuesta'],
+              rows: [
+                ['¿Cuándo se aplica el descuento?', 'Se refleja en el próximo ciclo de facturación (entre 24 y 48 hrs).'],
+                ['¿Puedo cambiar de plan en cualquier momento?', 'Sí, el cambio se aplica al inicio del próximo ciclo.'],
+                ['¿Cuál es el plazo de permanencia?', 'Depende de la oferta aceptada: 6, 12 o 18 meses según el beneficio.'],
+                ['¿Cómo reclamo por facturación incorrecta?', 'Ingresar reclamo por CRM o derivar al área de facturación.'],
+              ],
+              badges: {}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+/* ══════════════════════════════════════════════════════
+   LOAD / SAVE DATA
+══════════════════════════════════════════════════════ */
+let APP_DATA = null;
+
+async function loadData() {
+  try {
+    const saved = localStorage.getItem('cc_retencion_data');
+    APP_DATA = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+  } catch(e) {
+    APP_DATA = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  }
+}
+
+async function saveToStorage() {
+  try {
+    localStorage.setItem('cc_retencion_data', JSON.stringify(APP_DATA));
+    showToast('💾 Guardado correctamente');
+  } catch(e) {
+    showToast('❌ Error al guardar: ' + e.message, true);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════════ */
+function navigate(path) {
+  if (typeof path === 'string') path = [path];
+  currentPath = path;
+  renderAll();
+}
+
+function renderAll() {
+  renderSidebar();
+  renderMain();
+  renderBreadcrumb();
+}
+
+/* ══════════════════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════════════════ */
+function renderSidebar() {
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = '';
+
+  // Home link
+  const homeDiv = document.createElement('div');
+  homeDiv.className = 'sidebar-section open';
+  homeDiv.innerHTML = `<div class="sidebar-section-header" onclick="navigate(['home'])">
+    <span class="sidebar-section-icon">🏠</span>
+    <span class="sidebar-section-title">Inicio</span>
+  </div>`;
+  sb.appendChild(homeDiv);
+
+  APP_DATA.categories.forEach(cat => {
+    const isOpen = currentPath[0] === cat.id;
+    const section = document.createElement('div');
+    section.className = 'sidebar-section' + (isOpen ? ' open' : '');
+
+    let subcatHTML = cat.subcats.map(sc => {
+      const isActiveSub = currentPath[0] === cat.id && currentPath[1] === sc.id;
+      const delBtn = editMode
+        ? `<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('${cat.id}','${sc.id}')" title="Eliminar sección">✕</span>`
+        : '';
+      return `<div class="sidebar-subitem ${isActiveSub ? 'active' : ''}" style="justify-content:space-between" onclick="navigate(['${cat.id}','${sc.id}'])">${sc.icon} ${sc.title}${delBtn}</div>`;
+    }).join('');
+
+    subcatHTML += `<div class="sidebar-add-btn" onclick="addSubcatModal('${cat.id}')">＋ Agregar subcategoría</div>`;
+
+    section.innerHTML = `
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, '${cat.id}')">
+        <span class="sidebar-section-icon">${cat.icon}</span>
+        <span class="sidebar-section-title">${cat.title}</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items">${subcatHTML}</div>`;
+
+    sb.appendChild(section);
+  });
+
+  const addCatBtn = document.createElement('div');
+  addCatBtn.className = 'sidebar-add-btn';
+  addCatBtn.style.cssText = 'padding: 14px 18px; opacity: 0; pointer-events: none;';
+  addCatBtn.id = 'sidebarAddCat';
+  addCatBtn.onclick = () => addCategoryModal();
+  addCatBtn.innerHTML = '＋ Nueva categoría';
+  sb.appendChild(addCatBtn);
+
+  if (editMode) {
+    document.getElementById('sidebarAddCat').style.cssText = 'padding: 14px 18px; opacity:1; pointer-events:all; display:flex; align-items:center; gap:6px; font-size:12px; color: #7c3aed; cursor:pointer;';
+  }
+}
+
+function toggleSidebarSection(el, catId) {
+  el.classList.toggle('open');
+  if (!el.classList.contains('open') && currentPath[0] === catId) {
+    navigate([catId]);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   BREADCRUMB
+══════════════════════════════════════════════════════ */
+function renderBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  bc.innerHTML = '';
+
+  const crumbs = [];
+  crumbs.push({ label: 'Inicio', path: ['home'] });
+
+  if (currentPath[0] !== 'home') {
+    const cat = APP_DATA.categories.find(c => c.id === currentPath[0]);
+    if (cat) crumbs.push({ label: cat.title, path: [cat.id] });
+
+    if (currentPath[1]) {
+      const sc = cat?.subcats.find(s => s.id === currentPath[1]);
+      if (sc) crumbs.push({ label: sc.title, path: [cat.id, sc.id] });
+    }
+  }
+
+  crumbs.forEach((c, i) => {
+    const span = document.createElement('span');
+    span.className = 'bc-item' + (i === crumbs.length - 1 ? ' active' : '');
+    span.textContent = c.label;
+    span.onclick = () => navigate(c.path);
+    bc.appendChild(span);
+    if (i < crumbs.length - 1) {
+      const sep = document.createElement('span');
+      sep.className = 'bc-sep';
+      sep.textContent = '/';
+      bc.appendChild(sep);
+    }
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   MAIN CONTENT RENDERER
+══════════════════════════════════════════════════════ */
+function renderMain() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '';
+
+  if (currentPath[0] === 'home') {
+    renderHome(main);
+  } else if (currentPath.length === 1) {
+    renderCategoryPage(main, currentPath[0]);
+  } else if (currentPath.length === 2) {
+    renderSubcatPage(main, currentPath[0], currentPath[1]);
+  }
+}
+
+/* HOME */
+function renderHome(el) {
+  const d = APP_DATA;
+  const totalSubcats = d.categories.reduce((a, c) => a + c.subcats.length, 0);
+  const totalBlocks  = d.categories.reduce((a, c) => a + c.subcats.reduce((b, s) => b + s.blocks.length, 0), 0);
+
+  el.innerHTML = `
+    <div class="home-hero fadein">
+      <div class="home-eyebrow">Call Center — Wiki Operativa</div>
+      <h1 class="home-title">${d.title.replace('RETENCIONES','<span>RETENCIONES</span>')}</h1>
+      <p class="home-desc">${d.subtitle}</p>
+    </div>
+    <div class="home-stats fadein">
+      <div class="stat-pill"><div class="stat-pill-dot" style="background:#1a472a"></div>${d.categories.length} categorías</div>
+      <div class="stat-pill"><div class="stat-pill-dot" style="background:#1e40af"></div>${totalSubcats} secciones</div>
+      <div class="stat-pill"><div class="stat-pill-dot" style="background:#c45c00"></div>${totalBlocks} bloques de contenido</div>
+    </div>
+    <div class="section-label">Módulos</div>
+    <div class="cat-grid" id="catGrid"></div>
+    ${editMode ? `<div class="add-block-zone" onclick="addCategoryModal()" style="margin-top:8px">＋ Nueva categoría</div>` : ''}
+  `;
+
+  const grid = el.querySelector('#catGrid');
+  d.categories.forEach((cat, i) => {
+    const sc = cat.subcats.length;
+    const card = document.createElement('div');
+    card.className = 'cat-card fadein';
+    card.style.cssText = `--card-accent:${cat.color}; animation-delay:${i*0.06}s`;
+    card.innerHTML = `
+      <span class="cat-card-icon">${cat.icon}</span>
+      <div class="cat-card-title">${cat.title}</div>
+      <div class="cat-card-desc">${cat.desc}</div>
+      <div class="cat-card-meta">
+        <span class="cat-card-count">${sc} sección${sc!==1?'es':''}</span>
+        <span class="cat-card-arrow">→</span>
+      </div>
+    `;
+    card.onclick = () => navigate([cat.id]);
+    grid.appendChild(card);
+  });
+}
+
+/* CATEGORY PAGE */
+function renderCategoryPage(el, catId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  if (!cat) return;
+
+  el.innerHTML = `
+    <div class="page-header fadein">
+      <div class="page-header-icon">${cat.icon}</div>
+      <div class="page-header-text">
+        <div class="page-header-tag">Categoría</div>
+        <h2 class="page-title">${cat.title}</h2>
+        <p class="page-desc">${cat.desc}</p>
+      </div>
+    </div>
+    <div class="section-label">Secciones disponibles</div>
+    <div class="subcat-grid" id="subcatGrid"></div>
+    ${editMode ? `<div class="add-block-zone" onclick="addSubcatModal('${cat.id}')" style="margin-top:12px">＋ Nueva sección en ${cat.title}</div>` : ''}
+  `;
+
+  const grid = el.querySelector('#subcatGrid');
+  cat.subcats.forEach((sc, i) => {
+    const card = document.createElement('div');
+    card.className = 'subcat-card fadein';
+    card.style.animationDelay = `${i*0.07}s`;
+    card.innerHTML = `
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+        <span class="subcat-icon">${sc.icon}</span>
+        ${editMode ? `<button onclick="event.stopPropagation();deleteSubcat('${catId}','${sc.id}')" style="background:#fff1f2;border:1px solid #fecaca;color:#c0392b;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0">✕ Eliminar</button>` : ''}
+      </div>
+      <div class="subcat-title">${sc.title}</div>
+      <div class="subcat-desc">${sc.desc}</div>
+    `;
+    card.onclick = () => navigate([catId, sc.id]);
+    grid.appendChild(card);
+  });
+}
+
+/* SUBCAT PAGE */
+function renderSubcatPage(el, catId, subcatId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc = cat?.subcats.find(s => s.id === subcatId);
+  if (!sc) return;
+
+  el.innerHTML = `
+    <div class="page-header fadein">
+      <div class="page-header-icon">${sc.icon}</div>
+      <div class="page-header-text">
+        <div class="page-header-tag">${cat.title}</div>
+        <h2 class="page-title">${sc.title}</h2>
+        <p class="page-desc">${sc.desc}</p>
+      </div>
+      ${editMode ? `<button onclick="deleteSubcat('${catId}','${subcatId}')" style="background:#fff1f2;border:1px solid #fecaca;color:#c0392b;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:flex-start;margin-top:4px">🗑️ Eliminar sección</button>` : ''}
+    </div>
+    <div class="content-area fadein" id="contentArea"></div>
+    <div class="add-block-zone" style="margin-top:8px" onclick="addBlockModal()">＋ Agregar bloque de contenido</div>
+  `;
+
+  const area = el.querySelector('#contentArea');
+  sc.blocks.forEach((block, idx) => {
+    area.appendChild(renderBlock(block, idx, catId, subcatId));
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   BLOCK RENDERERS
+══════════════════════════════════════════════════════ */
+function renderBlock(block, idx, catId, subcatId) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'block open';
+
+  const editBtns = editMode ? `
+    <div class="block-edit-overlay">
+      <button class="block-edit-btn" onclick="editBlockModal(${idx},'${catId}','${subcatId}')">✏️ Editar</button>
+      <button class="block-edit-btn del" onclick="deleteBlock(${idx},'${catId}','${subcatId}')">✕</button>
+    </div>` : '';
+
+  if (block.type === 'text') {
+    const updatedLabel = block.updatedAt
+      ? `<span class="block-updated">🕒 Actualizado: ${block.updatedAt}</span>`
+      : `<span class="block-updated" style="color:#bbb">Sin fecha de actualización</span>`;
+
+    const quickBtn = !editMode
+      ? `<button class="block-quick-btn" onclick="event.stopPropagation();quickUpdateModal(${idx},'${catId}','${subcatId}')" title="Actualizar contenido rápido">⚡ Actualizar</button>`
+      : '';
+
+    wrapper.innerHTML = `
+      ${editBtns}
+      <div class="block-header">
+        <span class="block-header-icon">📝</span>
+        <span class="block-header-title">${block.title}</span>
+        <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+          ${updatedLabel}
+          ${quickBtn}
+        </div>
+        <span class="block-toggle" style="margin-left:8px">▲</span>
+      </div>
+      <div class="block-body">
+        <div class="text-content" ${editMode ? 'contenteditable="true"' : ''}
+          onblur="saveTextBlock(this,${idx},'${catId}','${subcatId}')"
+          style="white-space:pre-wrap">${block.content}</div>
+      </div>`;
+
+  } else if (block.type === 'links') {
+    wrapper.innerHTML = `
+      ${editBtns}
+      <div class="block-header">
+        <span class="block-header-icon">🔗</span>
+        <span class="block-header-title">${block.title}</span>
+        <span class="block-toggle">▲</span>
+      </div>
+      <div class="block-body"><div class="link-list" id="ll_${idx}_${catId}"></div></div>`;
+
+    const list = wrapper.querySelector(`#ll_${idx}_${catId}`);
+    block.items.forEach(item => {
+      const url = item.url.startsWith('http') ? item.url : 'https://' + item.url;
+      const a = document.createElement('a');
+      a.className = 'link-item';
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.innerHTML = `
+        <div class="link-item-icon">${item.icon}</div>
+        <div class="link-item-body">
+          <div class="link-item-title">${item.title}</div>
+          <div class="link-item-url">${url}</div>
+        </div>
+        <span class="link-item-arrow">↗</span>`;
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        // Técnica más compatible: crear un form temporal que hace POST a la URL
+        // Esto evita todos los bloqueos de popup y file:// del navegador
+        const newTab = window.open('', '_blank');
+        if (newTab) {
+          newTab.document.write(`<!DOCTYPE html><html><head>
+            <meta http-equiv="refresh" content="0;url=${url}">
+            </head><body><p>Redirigiendo...</p></body></html>`);
+          newTab.document.close();
+        } else {
+          // Si el navegador bloquea la nueva pestaña, abrir en misma ventana
+          window.location.href = url;
+        }
+      });
+      list.appendChild(a);
+    });
+
+  } else if (block.type === 'table') {
+    const theadHTML = block.headers.map(h => `<th>${h}</th>`).join('');
+    const tbodyHTML = block.rows.map(row => {
+      const cells = row.map((cell, ci) => {
+        if (ci === row.length - 1 && block.badges && block.badges[cell]) {
+          return `<td><span class="badge-cell badge-${block.badges[cell]}">${cell}</span></td>`;
+        }
+        const isPrice = /^\$[\d.,]+$/.test(cell);
+        return `<td ${isPrice ? 'class="price"' : ''}>${cell}</td>`;
+      }).join('');
+      return `<tr>${cells}</tr>`;
+    }).join('');
+
+    wrapper.innerHTML = `
+      ${editBtns}
+      <div class="block-header">
+        <span class="block-header-icon">📊</span>
+        <span class="block-header-title">${block.title}</span>
+        <span class="block-toggle">▲</span>
+      </div>
+      <div class="block-body" style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr>${theadHTML}</tr></thead>
+          <tbody>${tbodyHTML}</tbody>
+        </table>
+      </div>`;
+
+  } else if (block.type === 'alert') {
+    const icons = { warn: '⚠️', info: 'ℹ️', ok: '✅' };
+    wrapper.innerHTML = `
+      ${editBtns}
+      <div class="block-body" style="display:block;padding:0">
+        <div class="alert ${block.subtype}">
+          <span class="alert-icon">${icons[block.subtype]||'ℹ️'}</span>
+          <div><strong>${block.title}:</strong> ${block.content}</div>
+        </div>
+      </div>`;
+    wrapper.classList.add('always-open');
+
+  } else if (block.type === 'image') {
+    const imgContent = block.src
+      ? `<img src="${block.src}" class="img-block" alt="${block.title||''}">`
+      : `<div class="img-placeholder" style="display:block">🖼️ Imagen: ${block.title}<br><small>Agrega una imagen desde modo edición</small></div>`;
+
+    wrapper.innerHTML = `
+      ${editBtns}
+      <div class="block-header">
+        <span class="block-header-icon">🖼️</span>
+        <span class="block-header-title">${block.title||'Imagen'}</span>
+        <span class="block-toggle">▲</span>
+      </div>
+      <div class="block-body">${imgContent}</div>`;
+  }
+
+  // toggle colapsar — solo al hacer clic en el header directamente
+  const hdr = wrapper.querySelector('.block-header');
+  if (hdr) hdr.addEventListener('click', e => {
+    if (e.target.closest('.block-edit-overlay')) return;
+    if (e.target.closest('.block-quick-btn')) return;
+    if (e.target.closest('a')) return;
+    wrapper.classList.toggle('open');
+  });
+
+  return wrapper;
+}
+
+/* ══════════════════════════════════════════════════════
+   EDIT MODE
+══════════════════════════════════════════════════════ */
+/* ── CONTRASEÑA DE EDICIÓN ──
+   Para cambiarla: modifica el valor de EDIT_PASSWORD abajo ── */
+const EDIT_PASSWORD = 'clave2025';
+
+function requestEditAccess() {
+  if (editMode) {
+    // Ya está en modo edición → salir
+    toggleEditMode();
+    return;
+  }
+  openModal(`
+    <div style="text-align:center;margin-bottom:20px;font-size:36px">🔒</div>
+    <div class="modal-title" style="text-align:center">Acceso de Edición</div>
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.6">
+      Esta función es solo para el administrador.<br>Ingresa la contraseña para editar.
+    </p>
+    <div class="modal-field">
+      <label>Contraseña</label>
+      <input type="password" id="pwInput" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter') confirmPassword()">
+    </div>
+    <div id="pwError" style="color:#c0392b;font-size:12px;margin-top:-8px;margin-bottom:8px;display:none">
+      ❌ Contraseña incorrecta
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmPassword()">Ingresar</button>
+    </div>`);
+  setTimeout(() => document.getElementById('pwInput')?.focus(), 100);
+}
+
+function confirmPassword() {
+  const val = document.getElementById('pwInput')?.value;
+  if (val === EDIT_PASSWORD) {
+    closeModal();
+    toggleEditMode();
+  } else {
+    const err = document.getElementById('pwError');
+    if (err) { err.style.display = 'block'; }
+    const inp = document.getElementById('pwInput');
+    if (inp) { inp.value = ''; inp.focus(); }
+  }
+}
+
+function toggleEditMode() {
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  const btn = document.getElementById('editToggle');
+  btn.innerHTML = editMode ? '👁️ Ver normal' : '✏️ Editar';
+  btn.classList.toggle('active', editMode);
+
+  // Mostrar/ocultar botón exportar
+  document.getElementById('exportBtn').style.display = editMode ? 'flex' : 'none';
+
+  const addCat = document.getElementById('sidebarAddCat');
+  if (addCat) addCat.style.cssText = editMode
+    ? 'padding:14px 18px;opacity:1;pointer-events:all;display:flex;align-items:center;gap:6px;font-size:12px;color:#7c3aed;cursor:pointer;'
+    : 'padding:14px 18px;opacity:0;pointer-events:none;';
+
+  renderAll();
+}
+
+/* ── EXPORTAR: genera el HTML con los datos actuales incrustados ── */
+function exportFile() {
+  const dataStr = JSON.stringify(APP_DATA);
+  // Inyecta los datos actuales como DEFAULT_DATA en el HTML exportado
+  const source = document.documentElement.outerHTML;
+  const exported = source.replace(
+    /const DEFAULT_DATA = \{[\s\S]*?\};\s*\/\* ══/,
+    `const DEFAULT_DATA = ${dataStr};\n/* ══`
+  );
+  const blob = new Blob([exported], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Guia_Retenciones_' + new Date().toISOString().slice(0,10) + '.html';
+  a.click();
+  showToast('📤 Archivo exportado con todos los cambios');
+}
+
+function saveTextBlock(el, idx, catId, subcatId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc = cat?.subcats.find(s => s.id === subcatId);
+  if (sc?.blocks[idx]) {
+    sc.blocks[idx].content = el.innerText;
+    sc.blocks[idx].updatedAt = formatDate(new Date());
+  }
+}
+
+function deleteBlock(idx, catId, subcatId) {
+  if (!confirm('¿Eliminar este bloque?')) return;
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc = cat?.subcats.find(s => s.id === subcatId);
+  if (sc) sc.blocks.splice(idx, 1);
+  renderAll();
+}
+
+function deleteSubcat(catId, subcatId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc = cat?.subcats.find(s => s.id === subcatId);
+  if (!sc) return;
+  if (!confirm(`¿Eliminar la sección "${sc.title}"?\nEsto borrará todo su contenido.`)) return;
+  cat.subcats = cat.subcats.filter(s => s.id !== subcatId);
+  // Si estaba navegando en esa subcat, volver a la categoría
+  if (currentPath[1] === subcatId) navigate([catId]);
+  else renderAll();
+  showToast('🗑️ Sección eliminada');
+}
+
+/* ══════════════════════════════════════════════════════
+   MODALS
+══════════════════════════════════════════════════════ */
+function openModal(html) {
+  document.getElementById('modalBox').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+
+/* ADD CATEGORY */
+function addCategoryModal() {
+  openModal(`
+    <div class="modal-title">Nueva Categoría</div>
+    <div class="modal-field"><label>Icono (emoji)</label><input id="mIcon" value="📁" maxlength="4"></div>
+    <div class="modal-field"><label>Título</label><input id="mTitle" placeholder="Ej: Facturación"></div>
+    <div class="modal-field"><label>Descripción breve</label><input id="mDesc" placeholder="Ej: Gestión de cobros y reclamos"></div>
+    <div class="modal-field"><label>Color de acento</label><input id="mColor" type="color" value="#1a472a" style="height:40px;padding:4px"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmAddCategory()">Crear categoría</button>
+    </div>`);
+}
+function confirmAddCategory() {
+  const icon = document.getElementById('mIcon').value || '📁';
+  const title = document.getElementById('mTitle').value.trim();
+  const desc = document.getElementById('mDesc').value.trim();
+  const color = document.getElementById('mColor').value;
+  if (!title) return alert('El título es requerido');
+  const id = 'cat_' + Date.now();
+  APP_DATA.categories.push({ id, icon, title, desc, color, subcats: [] });
+  closeModal();
+  renderAll();
+}
+
+/* ADD SUBCAT */
+function addSubcatModal(catId) {
+  const catOpts = APP_DATA.categories.map(c => `<option value="${c.id}" ${c.id===catId?'selected':''}>${c.title}</option>`).join('');
+  openModal(`
+    <div class="modal-title">Nueva Sección</div>
+    <div class="modal-field"><label>Categoría padre</label><select id="mCatId">${catOpts}</select></div>
+    <div class="modal-field"><label>Icono (emoji)</label><input id="mIcon" value="📄" maxlength="4"></div>
+    <div class="modal-field"><label>Título de la sección</label><input id="mTitle" placeholder="Ej: Planes Prepago"></div>
+    <div class="modal-field"><label>Descripción breve</label><input id="mDesc" placeholder="Descripción corta..."></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmAddSubcat()">Crear sección</button>
+    </div>`);
+}
+function confirmAddSubcat() {
+  const catId = document.getElementById('mCatId').value;
+  const icon = document.getElementById('mIcon').value || '📄';
+  const title = document.getElementById('mTitle').value.trim();
+  const desc = document.getElementById('mDesc').value.trim();
+  if (!title) return alert('El título es requerido');
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  if (!cat) return;
+  const id = 'sc_' + Date.now();
+  cat.subcats.push({ id, icon, title, desc, blocks: [] });
+  closeModal();
+  navigate([catId, id]);
+}
+
+/* ADD BLOCK */
+function addBlockModal(defaultType) {
+  if (currentPath.length < 2) return showToast('Navega a una sección primero', true);
+  openModal(`
+    <div class="modal-title">Agregar Bloque</div>
+    <div class="modal-field"><label>Tipo de bloque</label>
+      <select id="mBlockType" onchange="updateBlockForm()">
+        <option value="text"  ${defaultType==='text'?'selected':''}>📝 Texto</option>
+        <option value="links" ${defaultType==='links'?'selected':''}>🔗 Links</option>
+        <option value="table" ${defaultType==='table'?'selected':''}>📊 Tabla</option>
+        <option value="image" ${defaultType==='image'?'selected':''}>🖼️ Imagen</option>
+        <option value="alert" ${defaultType==='alert'?'selected':''}>⚠️ Aviso</option>
+      </select>
+    </div>
+    <div id="blockFormArea"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmAddBlock()">Agregar</button>
+    </div>`);
+  updateBlockForm();
+}
+
+function updateBlockForm() {
+  const type = document.getElementById('mBlockType')?.value;
+  const area = document.getElementById('blockFormArea');
+  if (!area) return;
+
+  const forms = {
+    text: `<div class="modal-field"><label>Título</label><input id="bTitle" placeholder="Título del bloque"></div>
+           <div class="modal-field"><label>Contenido</label><textarea id="bContent" rows="5" placeholder="Escribe el contenido aquí..."></textarea></div>`,
+    links: `<div class="modal-field"><label>Título del bloque</label><input id="bTitle" placeholder="Ej: Links útiles"></div>
+            <div class="modal-field"><label>Links (uno por línea: "Título | URL")</label>
+            <textarea id="bLinks" rows="5" placeholder="Planes vigentes | https://somosclave.cl/planes&#10;Contratos | https://somosclave.cl/contratos"></textarea></div>`,
+    table: `<div class="modal-field"><label>Título</label><input id="bTitle" placeholder="Título de la tabla"></div>
+            <div class="modal-field"><label>Columnas (separadas por |)</label><input id="bHeaders" placeholder="Plan | Precio | Estado"></div>
+            <div class="modal-field"><label>Filas (una por línea, celdas separadas por |)</label>
+            <textarea id="bRows" rows="5" placeholder="Básico 100 | $19.990 | VIGENTE&#10;Estándar 300 | $24.990 | VIGENTE"></textarea></div>`,
+    image: `<div class="modal-field"><label>Título</label><input id="bTitle" placeholder="Descripción de la imagen"></div>
+            <div class="modal-field"><label>URL de la imagen (o pegar imagen base64)</label>
+            <input id="bImgUrl" placeholder="https://...imagen.jpg"></div>
+            <div class="modal-field"><label>O subir imagen desde tu equipo</label>
+            <input type="file" id="bImgFile" accept="image/*" onchange="previewImage(this)"></div>
+            <div id="imgPreview" style="margin-top:8px"></div>`,
+    alert: `<div class="modal-field"><label>Tipo</label>
+            <select id="bAlertType"><option value="info">ℹ️ Info (azul)</option><option value="warn">⚠️ Atención (naranja)</option><option value="ok">✅ Correcto (verde)</option></select></div>
+            <div class="modal-field"><label>Título del aviso</label><input id="bTitle" placeholder="Ej: Importante"></div>
+            <div class="modal-field"><label>Contenido</label><textarea id="bContent" rows="3" placeholder="Texto del aviso..."></textarea></div>`
+  };
+  area.innerHTML = forms[type] || '';
+}
+
+function previewImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('imgPreview').innerHTML = `<img src="${e.target.result}" style="max-width:100%;border-radius:8px;margin-top:8px">`;
+    document.getElementById('bImgUrl').value = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function confirmAddBlock() {
+  const type = document.getElementById('mBlockType').value;
+  const catId = currentPath[0], subcatId = currentPath[1];
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc = cat?.subcats.find(s => s.id === subcatId);
+  if (!sc) return;
+
+  let newBlock = null;
+
+  if (type === 'text') {
+    const title = document.getElementById('bTitle').value || 'Texto';
+    const content = document.getElementById('bContent').value;
+    newBlock = { type: 'text', title, content };
+
+  } else if (type === 'links') {
+    const title = document.getElementById('bTitle').value || 'Links';
+    const raw = document.getElementById('bLinks').value.trim().split('\n');
+    const items = raw.map(line => {
+      const parts = line.split('|').map(s => s.trim());
+      let url = parts[1] || '#';
+      if (url !== '#' && !url.startsWith('http')) url = 'https://' + url;
+      return { icon: '🔗', title: parts[0] || 'Link', url };
+    }).filter(i => i.title);
+    newBlock = { type: 'links', title, items };
+
+  } else if (type === 'table') {
+    const title = document.getElementById('bTitle').value || 'Tabla';
+    const headers = document.getElementById('bHeaders').value.split('|').map(s => s.trim());
+    const rowsRaw = document.getElementById('bRows').value.trim().split('\n');
+    const rows = rowsRaw.map(r => r.split('|').map(s => s.trim()));
+    newBlock = { type: 'table', title, headers, rows, badges: {} };
+
+  } else if (type === 'image') {
+    const title = document.getElementById('bTitle').value || 'Imagen';
+    const src = document.getElementById('bImgUrl').value;
+    newBlock = { type: 'image', title, src };
+
+  } else if (type === 'alert') {
+    const subtype = document.getElementById('bAlertType').value;
+    const title = document.getElementById('bTitle').value || 'Aviso';
+    const content = document.getElementById('bContent').value;
+    newBlock = { type: 'alert', subtype, title, content };
+  }
+
+  if (newBlock) {
+    sc.blocks.push(newBlock);
+    closeModal();
+    renderAll();
+  }
+}
+
+/* EDIT BLOCK */
+function editBlockModal(idx, catId, subcatId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc = cat?.subcats.find(s => s.id === subcatId);
+  const block = sc?.blocks[idx];
+  if (!block) return;
+
+  if (block.type === 'links') {
+    const linksText = block.items.map(i => `${i.title} | ${i.url}`).join('\n');
+    openModal(`
+      <div class="modal-title">Editar Links</div>
+      <div class="modal-field"><label>Título</label><input id="bTitle" value="${block.title}"></div>
+      <div class="modal-field"><label>Links (Título | URL)</label>
+        <textarea id="bLinks" rows="7">${linksText}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn-danger-sm" onclick="deleteBlock(${idx},'${catId}','${subcatId}');closeModal()">Eliminar</button>
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-confirm" onclick="confirmEditLinks(${idx},'${catId}','${subcatId}')">Guardar</button>
+      </div>`);
+
+  } else if (block.type === 'image') {
+    openModal(`
+      <div class="modal-title">Editar Imagen</div>
+      <div class="modal-field"><label>Título</label><input id="bTitle" value="${block.title||''}"></div>
+      <div class="modal-field"><label>URL de imagen</label><input id="bImgUrl" value="${block.src||''}"></div>
+      <div class="modal-field"><label>O subir nueva imagen</label>
+        <input type="file" id="bImgFile" accept="image/*" onchange="previewImage(this)"></div>
+      <div id="imgPreview">${block.src ? `<img src="${block.src}" style="max-width:100%;border-radius:8px;margin-top:8px">` : ''}</div>
+      <div class="modal-actions">
+        <button class="btn-danger-sm" onclick="deleteBlock(${idx},'${catId}','${subcatId}');closeModal()">Eliminar</button>
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-confirm" onclick="confirmEditImage(${idx},'${catId}','${subcatId}')">Guardar</button>
+      </div>`);
+  } else {
+    showToast('Haz click directamente en el texto para editarlo');
+    closeModal();
+  }
+}
+
+function confirmEditLinks(idx, catId, subcatId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc = cat?.subcats.find(s => s.id === subcatId);
+  const block = sc?.blocks[idx];
+  if (!block) return;
+  block.title = document.getElementById('bTitle').value;
+  const raw = document.getElementById('bLinks').value.trim().split('\n');
+  block.items = raw.map(line => {
+    const p = line.split('|').map(s => s.trim());
+    return { icon: '🔗', title: p[0] || 'Link', url: p[1] || '#' };
+  }).filter(i => i.title);
+  closeModal();
+  renderAll();
+}
+
+function confirmEditImage(idx, catId, subcatId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc = cat?.subcats.find(s => s.id === subcatId);
+  const block = sc?.blocks[idx];
+  if (!block) return;
+  block.title = document.getElementById('bTitle').value;
+  block.src = document.getElementById('bImgUrl').value;
+  closeModal();
+  renderAll();
+}
+
+/* ══════════════════════════════════════════════════════
+   QUICK UPDATE — actualización rápida sin modo edición
+══════════════════════════════════════════════════════ */
+function quickUpdateModal(idx, catId, subcatId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc  = cat?.subcats.find(s => s.id === subcatId);
+  const block = sc?.blocks[idx];
+  if (!block) return;
+
+  // Pide contraseña si no está en modo edición
+  openModal(`
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+      <span style="font-size:28px">⚡</span>
+      <div>
+        <div class="modal-title" style="margin-bottom:2px">Actualización Rápida</div>
+        <div style="font-size:12px;color:var(--muted)">${block.title}</div>
+      </div>
+    </div>
+
+    <div id="quickPwStep">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6">
+        Ingresa tu contraseña para actualizar este bloque.
+      </p>
+      <div class="modal-field">
+        <label>Contraseña</label>
+        <input type="password" id="qPwInput" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter') checkQuickPw(${idx},'${catId}','${subcatId}')">
+      </div>
+      <div id="qPwError" style="color:#c0392b;font-size:12px;margin-top:-8px;margin-bottom:8px;display:none">❌ Contraseña incorrecta</div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-confirm" onclick="checkQuickPw(${idx},'${catId}','${subcatId}')">Continuar →</button>
+      </div>
+    </div>
+
+    <div id="quickEditStep" style="display:none">
+      <div class="modal-field" style="margin-top:8px">
+        <label>Pega aquí el contenido actualizado de somosclave.cl</label>
+        <textarea id="qContent" rows="10" placeholder="Copia y pega el texto directamente desde somosclave.cl..."
+          style="font-size:13px;line-height:1.7">${block.content}</textarea>
+      </div>
+      <div style="background:var(--accent-light);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--accent2);margin-bottom:4px">
+        💡 <strong>Tip:</strong> Selecciona y copia solo el fragmento relevante de somosclave.cl — no necesitas pegarlo todo.
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button class="btn-confirm" onclick="confirmQuickUpdate(${idx},'${catId}','${subcatId}')">💾 Guardar y actualizar</button>
+      </div>
+    </div>`);
+
+  setTimeout(() => document.getElementById('qPwInput')?.focus(), 100);
+}
+
+function checkQuickPw(idx, catId, subcatId) {
+  const val = document.getElementById('qPwInput')?.value;
+  if (val === EDIT_PASSWORD) {
+    document.getElementById('quickPwStep').style.display = 'none';
+    document.getElementById('quickEditStep').style.display = 'block';
+    setTimeout(() => document.getElementById('qContent')?.focus(), 50);
+  } else {
+    const err = document.getElementById('qPwError');
+    if (err) err.style.display = 'block';
+    const inp = document.getElementById('qPwInput');
+    if (inp) { inp.value = ''; inp.focus(); }
+  }
+}
+
+function confirmQuickUpdate(idx, catId, subcatId) {
+  const cat = APP_DATA.categories.find(c => c.id === catId);
+  const sc  = cat?.subcats.find(s => s.id === subcatId);
+  if (!sc?.blocks[idx]) return;
+  const newContent = document.getElementById('qContent')?.value || '';
+  sc.blocks[idx].content   = newContent;
+  sc.blocks[idx].updatedAt = formatDate(new Date());
+  saveToStorage();
+  closeModal();
+  renderAll();
+  showToast('✅ Bloque actualizado correctamente');
+}
+
+function formatDate(d) {
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mn = String(d.getMinutes()).padStart(2,'0');
+  return `${dd}/${mm}/${yy} ${hh}:${mn}`;
+}
+
+
+function showToast(msg, isErr) {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:${isErr?'#c0392b':'#1a472a'};color:#fff;padding:10px 20px;border-radius:100px;font-size:13px;font-weight:600;z-index:500;box-shadow:0 4px 20px rgba(0,0,0,0.3);animation:fadeUp 0.3s ease`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+/* ══════════════════════════════════════════════════════
+   CLOCK
+══════════════════════════════════════════════════════ */
+function updateClock() {
+  const n = new Date();
+  document.getElementById('clock').textContent =
+    `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ══════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════ */
+async function init() {
+  await loadData();
+  renderAll();
+
+  // Detectar si el archivo se está abriendo localmente (file://)
+  if (window.location.protocol === 'file:') {
+    showEnvWarning();
+  }
+}
+
+function showEnvWarning() {
+  const overlay = document.createElement('div');
+  overlay.className = 'env-warning';
+  overlay.id = 'envWarning';
+  overlay.innerHTML = `
+    <div class="env-warning-box">
+      <div style="font-size:36px;margin-bottom:12px">⚠️</div>
+      <div class="env-warning-title">Archivo abierto localmente</div>
+      <div class="env-warning-desc">
+        Estás abriendo este archivo directo desde tu computador. Esto causa que los links externos sean bloqueados por el navegador.<br><br>
+        <strong>Para que todo funcione correctamente</strong>, sube el archivo a Google Drive y ábrelo desde ahí:
+      </div>
+      <div class="env-step">
+        <div class="env-step-num">1</div>
+        Entra a <strong>drive.google.com</strong> → arrastra este archivo HTML ahí
+      </div>
+      <div class="env-step">
+        <div class="env-step-num">2</div>
+        Clic derecho sobre el archivo → <strong>"Abrir con"</strong> → <strong>"Google Sites"</strong> o copia la URL y ábrela
+      </div>
+      <div class="env-step">
+        <div class="env-step-num">3</div>
+        Comparte esa URL con el personal — funciona en cualquier red sin bloqueos
+      </div>
+      <div class="env-btn-row">
+        <button class="env-btn-ok" onclick="window.open('https://drive.google.com','_blank');closeEnvWarning()">Ir a Google Drive →</button>
+        <button class="env-btn-skip" onclick="closeEnvWarning()">Continuar igual</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function closeEnvWarning() {
+  const w = document.getElementById('envWarning');
+  if (w) w.remove();
+}
+
+init();
+</script>
+</body>
+</html>
