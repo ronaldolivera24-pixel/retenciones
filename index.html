@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Campaña Retenciones — Wiki Operativa</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=Instrument+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #f5f4f0;
@@ -899,7 +897,7 @@ body {
 }
 </style>
 </head>
-<body>
+<body class="edit-mode">
 
 <!-- ══════════════════ TOPBAR ══════════════════ -->
 <div class="topbar">
@@ -907,17 +905,13 @@ body {
     <div class="topbar-brand-dot"></div>
     <div class="topbar-brand-text">Retenciones</div>
   </div>
-  <div class="breadcrumb" id="breadcrumb">
-    <span class="bc-item active">Inicio</span>
-  </div>
+  <div class="breadcrumb" id="breadcrumb"><span class="bc-item">Inicio</span><span class="bc-sep">/</span><span class="bc-item">Procedimientos</span><span class="bc-sep">/</span><span class="bc-item active">Tipificación de Llamadas</span></div>
   <div class="topbar-right">
-    <button class="btn-edit-toggle" id="editToggle" onclick="requestEditAccess()">
-      ✏️ Editar
-    </button>
-    <button class="btn-edit-toggle" id="exportBtn" onclick="exportFile()" style="background:rgba(255,255,255,0.08);display:none">
+    <button class="btn-edit-toggle active" id="editToggle" onclick="requestEditAccess()">👁️ Ver normal</button>
+    <button class="btn-edit-toggle" id="exportBtn" onclick="exportFile()" style="background: rgba(255, 255, 255, 0.08); display: flex;">
       📤 Exportar
     </button>
-    <div class="clock" id="clock">00:00</div>
+    <div class="clock" id="clock">09:08</div>
   </div>
 </div>
 
@@ -925,10 +919,106 @@ body {
 <div class="layout">
 
   <!-- SIDEBAR -->
-  <div class="sidebar" id="sidebar"></div>
+  <div class="sidebar" id="sidebar"><div class="sidebar-section open"><div class="sidebar-section-header" onclick="navigate(['home'])">
+    <span class="sidebar-section-icon">🏠</span>
+    <span class="sidebar-section-title">Inicio</span>
+  </div></div><div class="sidebar-section">
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, 'planes')">
+        <span class="sidebar-section-icon">📋</span>
+        <span class="sidebar-section-title">Planes Vigentes</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items"><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['planes','planes-hogar'])">🏠 Planes Hogar<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('planes','planes-hogar')" title="Eliminar sección">✕</span></div><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['planes','planes-movil'])">📱 Planes Móvil<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('planes','planes-movil')" title="Eliminar sección">✕</span></div><div class="sidebar-add-btn" onclick="addSubcatModal('planes')">＋ Agregar subcategoría</div></div></div><div class="sidebar-section">
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, 'oferta')">
+        <span class="sidebar-section-icon">🎯</span>
+        <span class="sidebar-section-title">Oferta Comercial Vigente</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items"><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['oferta','oferta-retenciones'])">💎 Oferta de Retenciones<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('oferta','oferta-retenciones')" title="Eliminar sección">✕</span></div><div class="sidebar-add-btn" onclick="addSubcatModal('oferta')">＋ Agregar subcategoría</div></div></div><div class="sidebar-section">
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, 'tecnicos')">
+        <span class="sidebar-section-icon">🔧</span>
+        <span class="sidebar-section-title">Inconvenientes Técnicos</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items"><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['tecnicos','tec-diagnostico'])">🔍 Diagnóstico Básico<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('tecnicos','tec-diagnostico')" title="Eliminar sección">✕</span></div><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['tecnicos','tec-escalacion'])">📡 Escalación Técnica<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('tecnicos','tec-escalacion')" title="Eliminar sección">✕</span></div><div class="sidebar-add-btn" onclick="addSubcatModal('tecnicos')">＋ Agregar subcategoría</div></div></div><div class="sidebar-section">
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, 'herramientas')">
+        <span class="sidebar-section-icon">🛠️</span>
+        <span class="sidebar-section-title">Herramientas de Retenciones</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items"><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['herramientas','herr-sistemas'])">💻 Acceso a Sistemas<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('herramientas','herr-sistemas')" title="Eliminar sección">✕</span></div><div class="sidebar-add-btn" onclick="addSubcatModal('herramientas')">＋ Agregar subcategoría</div></div></div><div class="sidebar-section">
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, 'solicitudes')">
+        <span class="sidebar-section-icon">📝</span>
+        <span class="sidebar-section-title">Solicitudes Comerciales</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items"><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['solicitudes','sol-cambioplan'])">🔄 Cambio de Plan<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('solicitudes','sol-cambioplan')" title="Eliminar sección">✕</span></div><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['solicitudes','sol-baja'])">⚠️ Proceso de Baja<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('solicitudes','sol-baja')" title="Eliminar sección">✕</span></div><div class="sidebar-add-btn" onclick="addSubcatModal('solicitudes')">＋ Agregar subcategoría</div></div></div><div class="sidebar-section">
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, 'argumentario')">
+        <span class="sidebar-section-icon">🎤</span>
+        <span class="sidebar-section-title">Argumentario</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items"><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['argumentario','arg-apertura'])">📞 Apertura de Llamada<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('argumentario','arg-apertura')" title="Eliminar sección">✕</span></div><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['argumentario','arg-objeciones'])">💬 Manejo de Objeciones<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('argumentario','arg-objeciones')" title="Eliminar sección">✕</span></div><div class="sidebar-add-btn" onclick="addSubcatModal('argumentario')">＋ Agregar subcategoría</div></div></div><div class="sidebar-section open">
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, 'procedimientos')">
+        <span class="sidebar-section-icon">📌</span>
+        <span class="sidebar-section-title">Procedimientos</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items"><div class="sidebar-subitem active" style="justify-content:space-between" onclick="navigate(['procedimientos','proc-tipificacion'])">🏷️ Tipificación de Llamadas<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('procedimientos','proc-tipificacion')" title="Eliminar sección">✕</span></div><div class="sidebar-add-btn" onclick="addSubcatModal('procedimientos')">＋ Agregar subcategoría</div></div></div><div class="sidebar-section">
+      <div class="sidebar-section-header" onclick="toggleSidebarSection(this.parentElement, 'faq')">
+        <span class="sidebar-section-icon">💬</span>
+        <span class="sidebar-section-title">Preguntas Frecuentes</span>
+        <span class="sidebar-section-chevron">▶</span>
+      </div>
+      <div class="sidebar-items"><div class="sidebar-subitem " style="justify-content:space-between" onclick="navigate(['faq','faq-general'])">❓ FAQ General<span class="sidebar-del-btn" onclick="event.stopPropagation();deleteSubcat('faq','faq-general')" title="Eliminar sección">✕</span></div><div class="sidebar-add-btn" onclick="addSubcatModal('faq')">＋ Agregar subcategoría</div></div></div><div class="sidebar-add-btn" id="sidebarAddCat" style="padding: 14px 18px; opacity: 1; pointer-events: all; display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgb(124, 58, 237); cursor: pointer;">＋ Nueva categoría</div></div>
 
   <!-- MAIN CONTENT -->
-  <div class="main" id="mainContent"></div>
+  <div class="main" id="mainContent">
+    <div class="page-header fadein">
+      <div class="page-header-icon">🏷️</div>
+      <div class="page-header-text">
+        <div class="page-header-tag">Procedimientos</div>
+        <h2 class="page-title">Tipificación de Llamadas</h2>
+        <p class="page-desc">Cómo registrar correctamente cada gestión</p>
+      </div>
+      <button onclick="deleteSubcat('procedimientos','proc-tipificacion')" style="background:#fff1f2;border:1px solid #fecaca;color:#c0392b;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:flex-start;margin-top:4px">🗑️ Eliminar sección</button>
+    </div>
+    <div class="content-area fadein" id="contentArea"><div class="block open">
+      
+    <div class="block-edit-overlay">
+      <button class="block-edit-btn" onclick="editBlockModal(0,'procedimientos','proc-tipificacion')">✏️ Editar</button>
+      <button class="block-edit-btn del" onclick="deleteBlock(0,'procedimientos','proc-tipificacion')">✕</button>
+    </div>
+      <div class="block-header">
+        <span class="block-header-icon">📊</span>
+        <span class="block-header-title">🏷️ Códigos de Tipificación</span>
+        <span class="block-toggle">▲</span>
+      </div>
+      <div class="block-body" style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Código</th><th>Descripción</th><th>Cuándo usar</th></tr></thead>
+          <tbody><tr><td>RET-OK</td><td>Retención exitosa</td><td>Cliente acepta oferta y permanece</td></tr><tr><td>RET-FALL</td><td>Retención fallida</td><td>Cliente rechaza oferta y solicita baja</td></tr><tr><td>RET-PEND</td><td>Retención pendiente</td><td>Cliente pide tiempo para decidir</td></tr><tr><td>TEC-ESCAL</td><td>Escalación técnica</td><td>Derivación a soporte técnico</td></tr><tr><td>SOL-CAMP</td><td>Cambio de plan</td><td>Solicitud procesada de cambio</td></tr></tbody>
+        </table>
+      </div></div><div class="block open">
+      
+    <div class="block-edit-overlay">
+      <button class="block-edit-btn" onclick="editBlockModal(1,'procedimientos','proc-tipificacion')">✏️ Editar</button>
+      <button class="block-edit-btn del" onclick="deleteBlock(1,'procedimientos','proc-tipificacion')">✕</button>
+    </div>
+      <div class="block-header">
+        <span class="block-header-icon">🔗</span>
+        <span class="block-header-title">SVA</span>
+        <span class="block-toggle">▲</span>
+      </div>
+      <div class="block-body"><div class="link-list" id="ll_1_procedimientos"><a class="link-item" href="https://#" target="_blank" rel="noopener noreferrer">
+        <div class="link-item-icon">🔗</div>
+        <div class="link-item-body">
+          <div class="link-item-title">https://somosclave.cl/respuesta.php?q=movil/31</div>
+          <div class="link-item-url">https://#</div>
+        </div>
+        <span class="link-item-arrow">↗</span></a></div></div></div></div>
+    <div class="add-block-zone" style="margin-top:8px" onclick="addBlockModal()">＋ Agregar bloque de contenido</div>
+  </div>
 
 </div>
 
@@ -947,7 +1037,23 @@ body {
 
 <!-- ══════════════════ MODAL ══════════════════ -->
 <div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modalBox"></div>
+  <div class="modal" id="modalBox">
+    <div style="text-align:center;margin-bottom:20px;font-size:36px">🔒</div>
+    <div class="modal-title" style="text-align:center">Acceso de Edición</div>
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.6">
+      Esta función es solo para el administrador.<br>Ingresa la contraseña para editar.
+    </p>
+    <div class="modal-field">
+      <label>Contraseña</label>
+      <input type="password" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter') confirmPassword()">
+    </div>
+    <div id="pwError" style="color:#c0392b;font-size:12px;margin-top:-8px;margin-bottom:8px;display:none">
+      ❌ Contraseña incorrecta
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="confirmPassword()">Ingresar</button>
+    </div></div>
 </div>
 
 <!-- ══════════════════ SCRIPTS ══════════════════ -->
@@ -962,367 +1068,7 @@ let currentPath = ['home']; // e.g. ['planes','vigentes']
    DEFAULT DATA STRUCTURE
    Estructura: categorias[] → subcategorias[] → bloques[]
 ══════════════════════════════════════════════════════ */
-const DEFAULT_DATA = {
-  title: 'CAMPAÑA RETENCIONES',
-  subtitle: 'Guía operativa para ejecutivos del servicio',
-  categories: [
-    {
-      id: 'planes',
-      icon: '📋',
-      title: 'Planes Vigentes',
-      desc: 'Tarifas, velocidades y condiciones de los planes activos.',
-      color: '#1a472a',
-      subcats: [
-        {
-          id: 'planes-hogar',
-          icon: '🏠',
-          title: 'Planes Hogar',
-          desc: 'Internet y TV para residentes',
-          blocks: [
-            {
-              type: 'alert',
-              subtype: 'info',
-              title: 'Información',
-              content: 'Esta sección contiene los planes vigentes para clientes de hogar. Actualizar mensualmente según instrucciones del área comercial.'
-            },
-            {
-              type: 'table',
-              title: '📊 Tabla de Planes Hogar',
-              headers: ['Plan', 'Velocidad', 'Precio Mensual', 'Beneficios', 'Estado'],
-              rows: [
-                ['Básico 100', '100 Mbps', '$19.990', 'Sin costo instalación', 'VIGENTE'],
-                ['Estándar 300', '300 Mbps', '$24.990', 'Router incluido', 'VIGENTE'],
-                ['Premium 600', '600 Mbps', '$32.990', 'Router + decodificador HD', 'VIGENTE'],
-                ['Ultra 1Gb', '1000 Mbps', '$44.990', 'Pack completo + soporte premium', 'NUEVO'],
-              ],
-              badges: { 'VIGENTE': 'green', 'NUEVO': 'blue', 'DESCONTINUADO': 'gray' }
-            },
-            {
-              type: 'links',
-              title: '🔗 Links relacionados',
-              items: [
-                { icon: '📄', title: 'Ficha técnica planes hogar', url: 'https://somosclave.cl/planes-hogar' },
-                { icon: '📜', title: 'Condiciones y contratos', url: 'https://somosclave.cl/contratos-hogar' },
-              ]
-            }
-          ]
-        },
-        {
-          id: 'planes-movil',
-          icon: '📱',
-          title: 'Planes Móvil',
-          desc: 'Planes de datos y minutos móviles',
-          blocks: [
-            {
-              type: 'table',
-              title: '📊 Planes Móviles Vigentes',
-              headers: ['Plan', 'GB Datos', 'Minutos', 'Precio', 'Estado'],
-              rows: [
-                ['S 8GB',  '8 GB',  'Ilimitados', '$9.990',  'VIGENTE'],
-                ['M 20GB', '20 GB', 'Ilimitados', '$14.990', 'VIGENTE'],
-                ['L 50GB', '50 GB', 'Ilimitados', '$19.990', 'VIGENTE'],
-                ['XL ∞',   'Ilimitados', 'Ilimitados', '$29.990', 'NUEVO'],
-              ],
-              badges: { 'VIGENTE': 'green', 'NUEVO': 'blue' }
-            },
-            {
-              type: 'links',
-              title: '🔗 Links relacionados',
-              items: [
-                { icon: '📡', title: 'Cobertura móvil por zona', url: 'https://somosclave.cl/cobertura-movil' },
-                { icon: '📑', title: 'Portabilidad numérica – guía', url: 'https://somosclave.cl/portabilidad' },
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'oferta',
-      icon: '🎯',
-      title: 'Oferta Comercial Vigente',
-      desc: 'Promociones y descuentos autorizados para retener clientes.',
-      color: '#1e40af',
-      subcats: [
-        {
-          id: 'oferta-retenciones',
-          icon: '💎',
-          title: 'Oferta de Retenciones',
-          desc: 'Descuentos y beneficios exclusivos para retener',
-          blocks: [
-            {
-              type: 'alert',
-              subtype: 'warn',
-              title: 'Atención',
-              content: 'Las ofertas de retención solo pueden ofrecerse a clientes con intención de baja confirmada. Registrar siempre en el CRM.'
-            },
-            {
-              type: 'table',
-              title: '💰 Oferta Mes Actual',
-              headers: ['Oferta', 'Beneficio', 'Duración', 'Requisito'],
-              rows: [
-                ['Descuento 20%', '20% dto. en plan actual', '3 meses', 'Permanencia 6m'],
-                ['Upgrade gratis', 'Subida de plan sin costo', '1er mes gratis', 'Permanencia 12m'],
-                ['Pack retención', 'Descuento + router nuevo', '6 meses', 'Permanencia 18m'],
-              ],
-              badges: {}
-            },
-            {
-              type: 'links',
-              title: '🔗 Recursos comerciales',
-              items: [
-                { icon: '🎁', title: 'Portal de ofertas vigentes (somosclave)', url: 'https://somosclave.cl/oferta-retencion' },
-                { icon: '📋', title: 'Formulario de oferta especial', url: 'https://somosclave.cl/formulario-oferta' },
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'tecnicos',
-      icon: '🔧',
-      title: 'Inconvenientes Técnicos',
-      desc: 'Protocolos para gestionar fallas y escalaciones técnicas.',
-      color: '#c45c00',
-      subcats: [
-        {
-          id: 'tec-diagnostico',
-          icon: '🔍',
-          title: 'Diagnóstico Básico',
-          desc: 'Pasos de diagnóstico con el cliente en línea',
-          blocks: [
-            {
-              type: 'text',
-              title: '📋 Protocolo de Diagnóstico',
-              content: `Cuando el cliente reporta un problema técnico, seguir estos pasos en orden:\n\n1. Verificar si existe una avería masiva en la zona (consultar Estado de Red).\n2. Si no hay avería masiva, iniciar diagnóstico básico con el cliente.\n3. Solicitar al cliente reiniciar el router (apagar 30 segundos y encender).\n4. Verificar si las luces del router están en estado normal.\n5. Si el problema persiste, escalar a soporte técnico nivel 2.`
-            },
-            {
-              type: 'links',
-              title: '🔗 Herramientas técnicas',
-              items: [
-                { icon: '🌐', title: 'Estado de red en tiempo real', url: 'https://somosclave.cl/estado-red' },
-                { icon: '📟', title: 'Guía luces del router por modelo', url: 'https://somosclave.cl/guia-router' },
-                { icon: '🎫', title: 'Crear ticket técnico', url: 'https://somosclave.cl/nuevo-ticket' },
-              ]
-            }
-          ]
-        },
-        {
-          id: 'tec-escalacion',
-          icon: '📡',
-          title: 'Escalación Técnica',
-          desc: 'Cuándo y cómo escalar a soporte nivel 2',
-          blocks: [
-            {
-              type: 'alert',
-              subtype: 'warn',
-              title: 'Importante',
-              content: 'Escalar solo después de completar el diagnóstico básico. Documentar todos los pasos realizados antes de escalar.'
-            },
-            {
-              type: 'table',
-              title: '📊 Criterios de Escalación',
-              headers: ['Situación', 'Acción', 'SLA'],
-              rows: [
-                ['Avería masiva confirmada', 'Informar al cliente, no crear ticket', '—'],
-                ['Falla sin avería masiva', 'Crear ticket N2 – reparación domiciliaria', '48 hrs'],
-                ['Sin servicio +24 hrs', 'Escalación urgente + compensación', '24 hrs'],
-                ['Reclamo reiterado', 'Derivar a supervisor técnico', '2 hrs'],
-              ],
-              badges: {}
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'herramientas',
-      icon: '🛠️',
-      title: 'Herramientas de Retenciones',
-      desc: 'Sistemas y plataformas para la gestión del ejecutivo.',
-      color: '#6d28d9',
-      subcats: [
-        {
-          id: 'herr-sistemas',
-          icon: '💻',
-          title: 'Acceso a Sistemas',
-          desc: 'Links directos a plataformas de trabajo',
-          blocks: [
-            {
-              type: 'links',
-              title: '🔗 Sistemas principales',
-              items: [
-                { icon: '👤', title: 'CRM – Gestión de clientes', url: 'https://somosclave.cl/crm' },
-                { icon: '📋', title: 'Sistema de órdenes de servicio', url: 'https://somosclave.cl/ordenes' },
-                { icon: '📊', title: 'Dashboard métricas ejecutivo', url: 'https://somosclave.cl/metricas' },
-                { icon: '📢', title: 'Portal de novedades y comunicados', url: 'https://somosclave.cl/novedades' },
-                { icon: '🎓', title: 'E-learning y capacitaciones', url: 'https://somosclave.cl/capacitacion' },
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'solicitudes',
-      icon: '📝',
-      title: 'Solicitudes Comerciales',
-      desc: 'Flujos para cambios de plan, portabilidad y bajas.',
-      color: '#0891b2',
-      subcats: [
-        {
-          id: 'sol-cambioplan',
-          icon: '🔄',
-          title: 'Cambio de Plan',
-          desc: 'Proceso de upgrade o downgrade de plan',
-          blocks: [
-            {
-              type: 'text',
-              title: '📋 Proceso Cambio de Plan',
-              content: `El cambio de plan se puede solicitar en cualquier momento del ciclo de facturación. El cambio se aplica al inicio del próximo ciclo.\n\nPasos:\n1. Verificar elegibilidad del cliente (sin deuda pendiente)\n2. Consultar stock del plan destino\n3. Registrar solicitud en CRM con motivo\n4. Confirmar con el cliente fecha efectiva del cambio\n5. Enviar confirmación por correo electrónico`
-            },
-            {
-              type: 'links',
-              title: '🔗 Formularios',
-              items: [
-                { icon: '📋', title: 'Formulario cambio de plan', url: 'https://somosclave.cl/cambio-plan' },
-                { icon: '📬', title: 'Confirmación por email (plantilla)', url: 'https://somosclave.cl/plantilla-email' },
-              ]
-            }
-          ]
-        },
-        {
-          id: 'sol-baja',
-          icon: '⚠️',
-          title: 'Proceso de Baja',
-          desc: 'Protocolo ante solicitud de término de contrato',
-          blocks: [
-            {
-              type: 'alert',
-              subtype: 'warn',
-              title: 'Protocolo de Baja',
-              content: 'Antes de procesar una baja, es obligatorio ofrecer al menos una oferta de retención. Registrar el rechazo del cliente en el CRM.'
-            },
-            {
-              type: 'text',
-              title: '📋 Pasos del Proceso de Baja',
-              content: `1. Escuchar motivo de baja activamente\n2. Aplicar argumentario según motivo (precio, servicio, mudanza, etc.)\n3. Ofrecer oferta de retención correspondiente\n4. Si el cliente rechaza: registrar en CRM y proceder con baja\n5. Informar plazos: la baja se aplica al fin del ciclo vigente\n6. Coordinar retiro de equipos si corresponde`
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'argumentario',
-      icon: '🎤',
-      title: 'Argumentario',
-      desc: 'Scripts, manejo de objeciones y speech de retención.',
-      color: '#be185d',
-      subcats: [
-        {
-          id: 'arg-apertura',
-          icon: '📞',
-          title: 'Apertura de Llamada',
-          desc: 'Script de bienvenida y detección de necesidad',
-          blocks: [
-            {
-              type: 'text',
-              title: '🎤 Script de Apertura',
-              content: `"Buenos días/tardes, le saluda [NOMBRE] del equipo de Atenciones de [EMPRESA]. ¿Con quién tengo el gusto de hablar?\n\n[Esperar respuesta]\n\nGracias [NOMBRE DEL CLIENTE], lo contactamos porque hemos visto su solicitud de [motivo] y queremos asegurarnos de darle la mejor solución posible. ¿Tiene un par de minutos para que lo pueda ayudar?"`
-            },
-            {
-              type: 'alert',
-              subtype: 'ok',
-              title: 'Consejo',
-              content: 'Siempre usar el nombre del cliente al menos 3 veces durante la llamada. Generar confianza antes de hacer cualquier oferta.'
-            }
-          ]
-        },
-        {
-          id: 'arg-objeciones',
-          icon: '💬',
-          title: 'Manejo de Objeciones',
-          desc: 'Respuestas preparadas para las objeciones más comunes',
-          blocks: [
-            {
-              type: 'table',
-              title: '💬 Objeciones y Respuestas',
-              headers: ['Objeción del cliente', 'Respuesta sugerida'],
-              rows: [
-                ['"Es muy caro"', '"Entiendo, por eso quiero mostrarte una oferta especial que tenemos para ti..."'],
-                ['"El servicio es malo"', '"Lamento escuchar eso. Revisemos juntos qué está pasando para resolverlo de inmediato..."'],
-                ['"Me voy a otra empresa"', '"Te entiendo. ¿Me podrías contar qué te ofrecen? Quiero ver si podemos igualarlo o mejorarlo..."'],
-                ['"No me interesa ninguna oferta"', '"¿Puedo preguntarte qué necesitaría para que valga la pena quedarse?"'],
-              ],
-              badges: {}
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'procedimientos',
-      icon: '📌',
-      title: 'Procedimientos',
-      desc: 'Protocolos internos, tipificación y normativas.',
-      color: '#374151',
-      subcats: [
-        {
-          id: 'proc-tipificacion',
-          icon: '🏷️',
-          title: 'Tipificación de Llamadas',
-          desc: 'Cómo registrar correctamente cada gestión',
-          blocks: [
-            {
-              type: 'table',
-              title: '🏷️ Códigos de Tipificación',
-              headers: ['Código', 'Descripción', 'Cuándo usar'],
-              rows: [
-                ['RET-OK', 'Retención exitosa', 'Cliente acepta oferta y permanece'],
-                ['RET-FALL', 'Retención fallida', 'Cliente rechaza oferta y solicita baja'],
-                ['RET-PEND', 'Retención pendiente', 'Cliente pide tiempo para decidir'],
-                ['TEC-ESCAL', 'Escalación técnica', 'Derivación a soporte técnico'],
-                ['SOL-CAMP', 'Cambio de plan', 'Solicitud procesada de cambio'],
-              ],
-              badges: {}
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'faq',
-      icon: '💬',
-      title: 'Preguntas Frecuentes',
-      desc: 'Respuestas listas para las consultas más comunes.',
-      color: '#0f766e',
-      subcats: [
-        {
-          id: 'faq-general',
-          icon: '❓',
-          title: 'FAQ General',
-          desc: 'Las preguntas más frecuentes de clientes',
-          blocks: [
-            {
-              type: 'table',
-              title: '❓ Preguntas Frecuentes',
-              headers: ['Pregunta', 'Respuesta'],
-              rows: [
-                ['¿Cuándo se aplica el descuento?', 'Se refleja en el próximo ciclo de facturación (entre 24 y 48 hrs).'],
-                ['¿Puedo cambiar de plan en cualquier momento?', 'Sí, el cambio se aplica al inicio del próximo ciclo.'],
-                ['¿Cuál es el plazo de permanencia?', 'Depende de la oferta aceptada: 6, 12 o 18 meses según el beneficio.'],
-                ['¿Cómo reclamo por facturación incorrecta?', 'Ingresar reclamo por CRM o derivar al área de facturación.'],
-              ],
-              badges: {}
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
-
+const DEFAULT_DATA = {"title":"CAMPAÑA RETENCIONES","subtitle":"Guía operativa para ejecutivos del servicio","categories":[{"id":"planes","icon":"📋","title":"Planes Vigentes","desc":"Tarifas, velocidades y condiciones de los planes activos.","color":"#1a472a","subcats":[{"id":"planes-hogar","icon":"🏠","title":"Planes Hogar","desc":"Internet y TV para residentes","blocks":[{"type":"alert","subtype":"info","title":"Información","content":"Esta sección contiene los planes vigentes para clientes de hogar. Actualizar mensualmente según instrucciones del área comercial."},{"type":"table","title":"📊 Tabla de Planes Hogar","headers":["Plan","Velocidad","Precio Mensual","Beneficios","Estado"],"rows":[["Básico 100","100 Mbps","$19.990","Sin costo instalación","VIGENTE"],["Estándar 300","300 Mbps","$24.990","Router incluido","VIGENTE"],["Premium 600","600 Mbps","$32.990","Router + decodificador HD","VIGENTE"],["Ultra 1Gb","1000 Mbps","$44.990","Pack completo + soporte premium","NUEVO"]],"badges":{"VIGENTE":"green","NUEVO":"blue","DESCONTINUADO":"gray"}},{"type":"links","title":"🔗 Links relacionados","items":[{"icon":"📄","title":"Ficha técnica planes hogar","url":"https://somosclave.cl/planes-hogar"},{"icon":"📜","title":"Condiciones y contratos","url":"https://somosclave.cl/contratos-hogar"}]}]},{"id":"planes-movil","icon":"📱","title":"Planes Móvil","desc":"Planes de datos y minutos móviles","blocks":[{"type":"table","title":"📊 Planes Móviles Vigentes","headers":["Plan","GB Datos","Minutos","Precio","Estado"],"rows":[["S 8GB","8 GB","Ilimitados","$9.990","VIGENTE"],["M 20GB","20 GB","Ilimitados","$14.990","VIGENTE"],["L 50GB","50 GB","Ilimitados","$19.990","VIGENTE"],["XL ∞","Ilimitados","Ilimitados","$29.990","NUEVO"]],"badges":{"VIGENTE":"green","NUEVO":"blue"}},{"type":"links","title":"🔗 Links relacionados","items":[{"icon":"📡","title":"Cobertura móvil por zona","url":"https://somosclave.cl/cobertura-movil"},{"icon":"📑","title":"Portabilidad numérica – guía","url":"https://somosclave.cl/portabilidad"}]}]}]},{"id":"oferta","icon":"🎯","title":"Oferta Comercial Vigente","desc":"Promociones y descuentos autorizados para retener clientes.","color":"#1e40af","subcats":[{"id":"oferta-retenciones","icon":"💎","title":"Oferta de Retenciones","desc":"Descuentos y beneficios exclusivos para retener","blocks":[{"type":"alert","subtype":"warn","title":"Atención","content":"Las ofertas de retención solo pueden ofrecerse a clientes con intención de baja confirmada. Registrar siempre en el CRM."},{"type":"table","title":"💰 Oferta Mes Actual","headers":["Oferta","Beneficio","Duración","Requisito"],"rows":[["Descuento 20%","20% dto. en plan actual","3 meses","Permanencia 6m"],["Upgrade gratis","Subida de plan sin costo","1er mes gratis","Permanencia 12m"],["Pack retención","Descuento + router nuevo","6 meses","Permanencia 18m"]],"badges":{}},{"type":"links","title":"🔗 Recursos comerciales","items":[{"icon":"🎁","title":"Portal de ofertas vigentes (somosclave)","url":"https://somosclave.cl/oferta-retencion"},{"icon":"📋","title":"Formulario de oferta especial","url":"https://somosclave.cl/formulario-oferta"}]}]}]},{"id":"tecnicos","icon":"🔧","title":"Inconvenientes Técnicos","desc":"Protocolos para gestionar fallas y escalaciones técnicas.","color":"#c45c00","subcats":[{"id":"tec-diagnostico","icon":"🔍","title":"Diagnóstico Básico","desc":"Pasos de diagnóstico con el cliente en línea","blocks":[{"type":"text","title":"📋 Protocolo de Diagnóstico","content":"Cuando el cliente reporta un problema técnico, seguir estos pasos en orden:\n\n1. Verificar si existe una avería masiva en la zona (consultar Estado de Red).\n2. Si no hay avería masiva, iniciar diagnóstico básico con el cliente.\n3. Solicitar al cliente reiniciar el router (apagar 30 segundos y encender).\n4. Verificar si las luces del router están en estado normal.\n5. Si el problema persiste, escalar a soporte técnico nivel 2."},{"type":"links","title":"🔗 Herramientas técnicas","items":[{"icon":"🌐","title":"Estado de red en tiempo real","url":"https://somosclave.cl/estado-red"},{"icon":"📟","title":"Guía luces del router por modelo","url":"https://somosclave.cl/guia-router"},{"icon":"🎫","title":"Crear ticket técnico","url":"https://somosclave.cl/nuevo-ticket"}]}]},{"id":"tec-escalacion","icon":"📡","title":"Escalación Técnica","desc":"Cuándo y cómo escalar a soporte nivel 2","blocks":[{"type":"alert","subtype":"warn","title":"Importante","content":"Escalar solo después de completar el diagnóstico básico. Documentar todos los pasos realizados antes de escalar."},{"type":"table","title":"📊 Criterios de Escalación","headers":["Situación","Acción","SLA"],"rows":[["Avería masiva confirmada","Informar al cliente, no crear ticket","—"],["Falla sin avería masiva","Crear ticket N2 – reparación domiciliaria","48 hrs"],["Sin servicio +24 hrs","Escalación urgente + compensación","24 hrs"],["Reclamo reiterado","Derivar a supervisor técnico","2 hrs"]],"badges":{}}]}]},{"id":"herramientas","icon":"🛠️","title":"Herramientas de Retenciones","desc":"Sistemas y plataformas para la gestión del ejecutivo.","color":"#6d28d9","subcats":[{"id":"herr-sistemas","icon":"💻","title":"Acceso a Sistemas","desc":"Links directos a plataformas de trabajo","blocks":[{"type":"links","title":"🔗 Sistemas principales","items":[{"icon":"👤","title":"CRM – Gestión de clientes","url":"https://somosclave.cl/crm"},{"icon":"📋","title":"Sistema de órdenes de servicio","url":"https://somosclave.cl/ordenes"},{"icon":"📊","title":"Dashboard métricas ejecutivo","url":"https://somosclave.cl/metricas"},{"icon":"📢","title":"Portal de novedades y comunicados","url":"https://somosclave.cl/novedades"},{"icon":"🎓","title":"E-learning y capacitaciones","url":"https://somosclave.cl/capacitacion"}]}]}]},{"id":"solicitudes","icon":"📝","title":"Solicitudes Comerciales","desc":"Flujos para cambios de plan, portabilidad y bajas.","color":"#0891b2","subcats":[{"id":"sol-cambioplan","icon":"🔄","title":"Cambio de Plan","desc":"Proceso de upgrade o downgrade de plan","blocks":[{"type":"text","title":"📋 Proceso Cambio de Plan","content":"El cambio de plan se puede solicitar en cualquier momento del ciclo de facturación. El cambio se aplica al inicio del próximo ciclo.\n\nPasos:\n1. Verificar elegibilidad del cliente (sin deuda pendiente)\n2. Consultar stock del plan destino\n3. Registrar solicitud en CRM con motivo\n4. Confirmar con el cliente fecha efectiva del cambio\n5. Enviar confirmación por correo electrónico"},{"type":"links","title":"🔗 Formularios","items":[{"icon":"📋","title":"Formulario cambio de plan","url":"https://somosclave.cl/cambio-plan"},{"icon":"📬","title":"Confirmación por email (plantilla)","url":"https://somosclave.cl/plantilla-email"}]}]},{"id":"sol-baja","icon":"⚠️","title":"Proceso de Baja","desc":"Protocolo ante solicitud de término de contrato","blocks":[{"type":"alert","subtype":"warn","title":"Protocolo de Baja","content":"Antes de procesar una baja, es obligatorio ofrecer al menos una oferta de retención. Registrar el rechazo del cliente en el CRM."},{"type":"text","title":"📋 Pasos del Proceso de Baja","content":"1. Escuchar motivo de baja activamente\n2. Aplicar argumentario según motivo (precio, servicio, mudanza, etc.)\n3. Ofrecer oferta de retención correspondiente\n4. Si el cliente rechaza: registrar en CRM y proceder con baja\n5. Informar plazos: la baja se aplica al fin del ciclo vigente\n6. Coordinar retiro de equipos si corresponde"}]}]},{"id":"argumentario","icon":"🎤","title":"Argumentario","desc":"Scripts, manejo de objeciones y speech de retención.","color":"#be185d","subcats":[{"id":"arg-apertura","icon":"📞","title":"Apertura de Llamada","desc":"Script de bienvenida y detección de necesidad","blocks":[{"type":"text","title":"🎤 Script de Apertura","content":"\"Buenos días/tardes, le saluda [NOMBRE] del equipo de Atenciones de [EMPRESA]. ¿Con quién tengo el gusto de hablar?\n\n[Esperar respuesta]\n\nGracias [NOMBRE DEL CLIENTE], lo contactamos porque hemos visto su solicitud de [motivo] y queremos asegurarnos de darle la mejor solución posible. ¿Tiene un par de minutos para que lo pueda ayudar?\""},{"type":"alert","subtype":"ok","title":"Consejo","content":"Siempre usar el nombre del cliente al menos 3 veces durante la llamada. Generar confianza antes de hacer cualquier oferta."}]},{"id":"arg-objeciones","icon":"💬","title":"Manejo de Objeciones","desc":"Respuestas preparadas para las objeciones más comunes","blocks":[{"type":"table","title":"💬 Objeciones y Respuestas","headers":["Objeción del cliente","Respuesta sugerida"],"rows":[["\"Es muy caro\"","\"Entiendo, por eso quiero mostrarte una oferta especial que tenemos para ti...\""],["\"El servicio es malo\"","\"Lamento escuchar eso. Revisemos juntos qué está pasando para resolverlo de inmediato...\""],["\"Me voy a otra empresa\"","\"Te entiendo. ¿Me podrías contar qué te ofrecen? Quiero ver si podemos igualarlo o mejorarlo...\""],["\"No me interesa ninguna oferta\"","\"¿Puedo preguntarte qué necesitaría para que valga la pena quedarse?\""]],"badges":{}}]}]},{"id":"procedimientos","icon":"📌","title":"Procedimientos","desc":"Protocolos internos, tipificación y normativas.","color":"#374151","subcats":[{"id":"proc-tipificacion","icon":"🏷️","title":"Tipificación de Llamadas","desc":"Cómo registrar correctamente cada gestión","blocks":[{"type":"table","title":"🏷️ Códigos de Tipificación","headers":["Código","Descripción","Cuándo usar"],"rows":[["RET-OK","Retención exitosa","Cliente acepta oferta y permanece"],["RET-FALL","Retención fallida","Cliente rechaza oferta y solicita baja"],["RET-PEND","Retención pendiente","Cliente pide tiempo para decidir"],["TEC-ESCAL","Escalación técnica","Derivación a soporte técnico"],["SOL-CAMP","Cambio de plan","Solicitud procesada de cambio"]],"badges":{}},{"type":"links","title":"SVA","items":[{"icon":"🔗","title":"https://somosclave.cl/respuesta.php?q=movil/31","url":"#"}]}]}]},{"id":"faq","icon":"💬","title":"Preguntas Frecuentes","desc":"Respuestas listas para las consultas más comunes.","color":"#0f766e","subcats":[{"id":"faq-general","icon":"❓","title":"FAQ General","desc":"Las preguntas más frecuentes de clientes","blocks":[{"type":"table","title":"❓ Preguntas Frecuentes","headers":["Pregunta","Respuesta"],"rows":[["¿Cuándo se aplica el descuento?","Se refleja en el próximo ciclo de facturación (entre 24 y 48 hrs)."],["¿Puedo cambiar de plan en cualquier momento?","Sí, el cambio se aplica al inicio del próximo ciclo."],["¿Cuál es el plazo de permanencia?","Depende de la oferta aceptada: 6, 12 o 18 meses según el beneficio."],["¿Cómo reclamo por facturación incorrecta?","Ingresar reclamo por CRM o derivar al área de facturación."]],"badges":{}}]}]}]};
 /* ══════════════════════════════════════════════════════
    LOAD / SAVE DATA
 ══════════════════════════════════════════════════════ */
@@ -2246,5 +1992,6 @@ function closeEnvWarning() {
 
 init();
 </script>
-</body>
-</html>
+
+
+</body></html>
